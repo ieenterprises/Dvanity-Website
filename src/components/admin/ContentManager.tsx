@@ -169,8 +169,19 @@ const ContentManager = ({
 
   // Update active tab when selectedSection prop changes
   useEffect(() => {
-    setActiveTab(selectedSection);
+    // Handle the case where selectedSection is 'bottle-service'
+    if (selectedSection === "bottle-service") {
+      setActiveTab("bottleService");
+    } else {
+      setActiveTab(selectedSection);
+    }
+    console.log("Selected section changed to:", selectedSection);
   }, [selectedSection]);
+
+  // Debug log to check active tab
+  useEffect(() => {
+    console.log("Active tab changed to:", activeTab);
+  }, [activeTab]);
 
   // Handle file upload (any file type)
   const handleFileUpload = async (
@@ -455,20 +466,25 @@ const ContentManager = ({
   };
 
   return (
-    <div className="w-full h-full bg-black text-white p-6 overflow-auto">
+    <div className="w-full h-full bg-white dark:bg-black text-gray-800 dark:text-white p-6 overflow-auto transition-colors duration-200">
       <Toaster />
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gold">Content Manager</h1>
+        <h1 className="text-2xl font-bold text-amber-600 dark:text-gold">
+          Content Manager
+        </h1>
         <div className="flex space-x-4">
           <Button
             variant="outline"
-            className="border-gold text-gold bg-black/40"
+            className="border-amber-600 text-amber-600 bg-white/40 dark:border-gold dark:text-gold dark:bg-black/40"
             onClick={handlePreview}
           >
             <Eye className="mr-2 h-4 w-4" />
             Preview
           </Button>
-          <Button className="bg-gold text-black" onClick={handlePublish}>
+          <Button
+            className="bg-amber-600 dark:bg-gold text-white dark:text-black"
+            onClick={handlePublish}
+          >
             <Save className="mr-2 h-4 w-4" />
             Publish
           </Button>
@@ -476,45 +492,45 @@ const ContentManager = ({
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="w-full bg-gray-900 border-b border-gray-800 mb-6">
+        <TabsList className="w-full bg-gray-100 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 mb-6">
           <TabsTrigger
             value="hero"
-            className="data-[state=active]:bg-gold data-[state=active]:text-black bg-gray-800"
+            className="data-[state=active]:bg-amber-600 data-[state=active]:text-white dark:data-[state=active]:bg-gold dark:data-[state=active]:text-black bg-white dark:bg-gray-800"
           >
             <Video className="mr-2 h-4 w-4" />
             Hero Section
           </TabsTrigger>
           <TabsTrigger
             value="events"
-            className="data-[state=active]:bg-gold data-[state=active]:text-black bg-gray-800"
+            className="data-[state=active]:bg-amber-600 data-[state=active]:text-white dark:data-[state=active]:bg-gold dark:data-[state=active]:text-black bg-white dark:bg-gray-800"
           >
             <Calendar className="mr-2 h-4 w-4" />
             Events
           </TabsTrigger>
           <TabsTrigger
             value="gallery"
-            className="data-[state=active]:bg-gold data-[state=active]:text-black bg-gray-800"
+            className="data-[state=active]:bg-amber-600 data-[state=active]:text-white dark:data-[state=active]:bg-gold dark:data-[state=active]:text-black bg-white dark:bg-gray-800"
           >
             <Image className="mr-2 h-4 w-4" />
             Gallery
           </TabsTrigger>
           <TabsTrigger
             value="about"
-            className="data-[state=active]:bg-gold data-[state=active]:text-black bg-gray-800"
+            className="data-[state=active]:bg-amber-600 data-[state=active]:text-white dark:data-[state=active]:bg-gold dark:data-[state=active]:text-black bg-white dark:bg-gray-800"
           >
             <FileText className="mr-2 h-4 w-4" />
             About
           </TabsTrigger>
           <TabsTrigger
             value="contact"
-            className="data-[state=active]:bg-gold data-[state=active]:text-black bg-gray-800"
+            className="data-[state=active]:bg-amber-600 data-[state=active]:text-white dark:data-[state=active]:bg-gold dark:data-[state=active]:text-black bg-white dark:bg-gray-800"
           >
             <Users className="mr-2 h-4 w-4" />
             Contact
           </TabsTrigger>
           <TabsTrigger
             value="bottleService"
-            className="data-[state=active]:bg-gold data-[state=active]:text-black bg-gray-800"
+            className="data-[state=active]:bg-amber-600 data-[state=active]:text-white dark:data-[state=active]:bg-gold dark:data-[state=active]:text-black bg-white dark:bg-gray-800"
           >
             <GlassWater className="mr-2 h-4 w-4" />
             Bottle Service
@@ -523,8 +539,10 @@ const ContentManager = ({
 
         {/* Hero Section Content */}
         <TabsContent value="hero" className="space-y-6">
-          <div className="bg-gray-900 p-6 rounded-lg border border-gray-800">
-            <h2 className="text-xl font-bold mb-4 text-gold">Hero Section</h2>
+          <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-800">
+            <h2 className="text-xl font-bold mb-4 text-amber-600 dark:text-gold">
+              Hero Section
+            </h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Title</label>
@@ -533,7 +551,7 @@ const ContentManager = ({
                   onChange={(e) =>
                     setHeroContent({ ...heroContent, title: e.target.value })
                   }
-                  className="bg-gray-800 border-gray-700"
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                 />
               </div>
               <div>
@@ -545,7 +563,7 @@ const ContentManager = ({
                   onChange={(e) =>
                     setHeroContent({ ...heroContent, subtitle: e.target.value })
                   }
-                  className="bg-gray-800 border-gray-700"
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                 />
               </div>
               <div>
@@ -561,13 +579,13 @@ const ContentManager = ({
                         videoUrl: e.target.value,
                       })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                     placeholder="Video URL"
                   />
                   <label className="cursor-pointer">
                     <Button
                       variant="outline"
-                      className="border-gold text-gold bg-black/40"
+                      className="border-amber-600 text-amber-600 bg-white/40 dark:border-gold dark:text-gold dark:bg-black/40"
                       type="button"
                       onClick={(e) => {
                         e.preventDefault();
@@ -600,11 +618,13 @@ const ContentManager = ({
 
         {/* Events Content */}
         <TabsContent value="events" className="space-y-6">
-          <div className="bg-gray-900 p-6 rounded-lg border border-gray-800">
+          <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-800">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gold">Event Categories</h2>
+              <h2 className="text-xl font-bold text-amber-600 dark:text-gold">
+                Event Categories
+              </h2>
               <Button
-                className="bg-gold text-black"
+                className="bg-amber-600 dark:bg-gold text-white dark:text-black"
                 onClick={() => setIsAddingEventCategory(true)}
               >
                 <Plus className="mr-2 h-4 w-4" />
@@ -615,11 +635,13 @@ const ContentManager = ({
               {(eventCategoriesContent || []).map((category) => (
                 <div
                   key={category.id}
-                  className="bg-gray-800 p-4 rounded-lg border border-gray-700 flex justify-between items-center"
+                  className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 flex justify-between items-center"
                 >
                   <div>
-                    <h3 className="font-bold text-gold">{category.name}</h3>
-                    <p className="text-sm text-gray-400">
+                    <h3 className="font-bold text-amber-600 dark:text-gold">
+                      {category.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
                       Slug: {category.slug}
                     </p>
                   </div>
@@ -661,10 +683,12 @@ const ContentManager = ({
               ))}
             </div>
 
-            <div className="flex justify-between items-center mb-4 mt-8 pt-4 border-t border-gray-700">
-              <h2 className="text-xl font-bold text-gold">Events</h2>
+            <div className="flex justify-between items-center mb-4 mt-8 pt-4 border-t border-gray-200 dark:border-gray-700">
+              <h2 className="text-xl font-bold text-amber-600 dark:text-gold">
+                Events
+              </h2>
               <Button
-                className="bg-gold text-black"
+                className="bg-amber-600 dark:bg-gold text-white dark:text-black"
                 onClick={() => setIsAddingEvent(true)}
               >
                 <Plus className="mr-2 h-4 w-4" />
@@ -675,7 +699,7 @@ const ContentManager = ({
               {(eventsContent || []).map((event) => (
                 <div
                   key={event.id}
-                  className="bg-gray-800 p-4 rounded-lg border border-gray-700 flex"
+                  className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 flex"
                 >
                   <div className="w-24 h-24 mr-4 overflow-hidden rounded-md">
                     <img
@@ -685,8 +709,12 @@ const ContentManager = ({
                     />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-bold text-gold">{event.title}</h3>
-                    <p className="text-sm text-gray-400">{event.date}</p>
+                    <h3 className="font-bold text-amber-600 dark:text-gold">
+                      {event.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {event.date}
+                    </p>
                     <p className="text-sm mt-1">{event.description}</p>
                   </div>
                   <div className="flex space-x-2">
@@ -735,9 +763,9 @@ const ContentManager = ({
             open={isAddingEventCategory}
             onOpenChange={setIsAddingEventCategory}
           >
-            <DialogContent className="bg-gray-900 border border-gray-800 text-white">
+            <DialogContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-800 dark:text-white">
               <DialogHeader>
-                <DialogTitle className="text-gold">
+                <DialogTitle className="text-amber-600 dark:text-gold">
                   {editingItemId
                     ? "Edit Event Category"
                     : "Add New Event Category"}
@@ -756,7 +784,7 @@ const ContentManager = ({
                         name: e.target.value,
                       })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                   />
                 </div>
                 <div>
@@ -771,10 +799,10 @@ const ContentManager = ({
                         slug: e.target.value,
                       })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                     placeholder="e.g., vip, music, special"
                   />
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                     Used for filtering events. Use lowercase letters without
                     spaces.
                   </p>
@@ -783,6 +811,7 @@ const ContentManager = ({
               <DialogFooter>
                 <Button
                   variant="outline"
+                  className="border-gray-200 dark:border-gray-700"
                   onClick={() => {
                     setIsAddingEventCategory(false);
                     setEditingItemId(null);
@@ -795,7 +824,7 @@ const ContentManager = ({
                   Cancel
                 </Button>
                 <Button
-                  className="bg-gold text-black"
+                  className="bg-amber-600 dark:bg-gold text-white dark:text-black"
                   onClick={() => {
                     if (editingItemId) {
                       updateEventCategory(editingItemId, newEventCategory);
@@ -818,9 +847,9 @@ const ContentManager = ({
 
           {/* Add/Edit Event Dialog */}
           <Dialog open={isAddingEvent} onOpenChange={setIsAddingEvent}>
-            <DialogContent className="bg-gray-900 border border-gray-800 text-white">
+            <DialogContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-800 dark:text-white">
               <DialogHeader>
-                <DialogTitle className="text-gold">
+                <DialogTitle className="text-amber-600 dark:text-gold">
                   {editingItemId ? "Edit Event" : "Add New Event"}
                 </DialogTitle>
               </DialogHeader>
@@ -834,7 +863,7 @@ const ContentManager = ({
                     onChange={(e) =>
                       setNewEvent({ ...newEvent, title: e.target.value })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                   />
                 </div>
                 <div>
@@ -844,7 +873,7 @@ const ContentManager = ({
                     onChange={(e) =>
                       setNewEvent({ ...newEvent, date: e.target.value })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                     placeholder="e.g., FRI, OCT 15"
                   />
                 </div>
@@ -857,7 +886,7 @@ const ContentManager = ({
                     onChange={(e) =>
                       setNewEvent({ ...newEvent, description: e.target.value })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                     rows={3}
                   />
                 </div>
@@ -871,10 +900,10 @@ const ContentManager = ({
                       setNewEvent({ ...newEvent, category: value })
                     }
                   >
-                    <SelectTrigger className="bg-gray-800 border-gray-700">
+                    <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                       <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-900 border-gray-700">
+                    <SelectContent className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
                       {(eventCategoriesContent || []).map((category) => (
                         <SelectItem key={category.id} value={category.slug}>
                           {category.name}
@@ -893,13 +922,13 @@ const ContentManager = ({
                       onChange={(e) =>
                         setNewEvent({ ...newEvent, image: e.target.value })
                       }
-                      className="bg-gray-800 border-gray-700"
+                      className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                       placeholder="Image URL"
                     />
                     <label className="cursor-pointer">
                       <Button
                         variant="outline"
-                        className="border-gold text-gold bg-black/40"
+                        className="border-amber-600 text-amber-600 bg-white/40 dark:border-gold dark:text-gold dark:bg-black/40"
                         type="button"
                         onClick={(e) => {
                           e.preventDefault();
@@ -936,6 +965,7 @@ const ContentManager = ({
               <DialogFooter>
                 <Button
                   variant="outline"
+                  className="border-gray-200 dark:border-gray-700"
                   onClick={() => {
                     setIsAddingEvent(false);
                     setEditingItemId(null);
@@ -951,7 +981,7 @@ const ContentManager = ({
                   Cancel
                 </Button>
                 <Button
-                  className="bg-gold text-black"
+                  className="bg-amber-600 dark:bg-gold text-white dark:text-black"
                   onClick={() => {
                     if (editingItemId) {
                       updateEvent(editingItemId, newEvent);
@@ -974,13 +1004,13 @@ const ContentManager = ({
 
         {/* Gallery Content */}
         <TabsContent value="gallery" className="space-y-6">
-          <div className="bg-gray-900 p-6 rounded-lg border border-gray-800">
+          <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-800">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gold">
+              <h2 className="text-xl font-bold text-amber-600 dark:text-gold">
                 Gallery Categories
               </h2>
               <Button
-                className="bg-gold text-black"
+                className="bg-amber-600 dark:bg-gold text-white dark:text-black"
                 onClick={() => setIsAddingGalleryCategory(true)}
               >
                 <Plus className="mr-2 h-4 w-4" />
@@ -991,11 +1021,13 @@ const ContentManager = ({
               {(galleryCategoriesContent || []).map((category) => (
                 <div
                   key={category.id}
-                  className="bg-gray-800 p-4 rounded-lg border border-gray-700 flex justify-between items-center"
+                  className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 flex justify-between items-center"
                 >
                   <div>
-                    <h3 className="font-bold text-gold">{category.name}</h3>
-                    <p className="text-sm text-gray-400">
+                    <h3 className="font-bold text-amber-600 dark:text-gold">
+                      {category.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
                       Slug: {category.slug}
                     </p>
                   </div>
@@ -1037,10 +1069,12 @@ const ContentManager = ({
               ))}
             </div>
 
-            <div className="flex justify-between items-center mb-4 mt-8 pt-4 border-t border-gray-700">
-              <h2 className="text-xl font-bold text-gold">Photo Gallery</h2>
+            <div className="flex justify-between items-center mb-4 mt-8 pt-4 border-t border-gray-200 dark:border-gray-700">
+              <h2 className="text-xl font-bold text-amber-600 dark:text-gold">
+                Photo Gallery
+              </h2>
               <Button
-                className="bg-gold text-black"
+                className="bg-amber-600 dark:bg-gold text-white dark:text-black"
                 onClick={() => setIsAddingGalleryImage(true)}
               >
                 <Upload className="mr-2 h-4 w-4" />
@@ -1093,7 +1127,7 @@ const ContentManager = ({
                   <div className="mt-1 flex justify-between items-center">
                     <p className="text-sm truncate">{photo.caption}</p>
                     {photo.category && (
-                      <span className="text-xs bg-gold/20 text-gold px-2 py-0.5 rounded">
+                      <span className="text-xs bg-amber-600/20 dark:bg-gold/20 text-amber-600 dark:text-gold px-2 py-0.5 rounded">
                         {photo.category}
                       </span>
                     )}
@@ -1108,9 +1142,9 @@ const ContentManager = ({
             open={isAddingGalleryCategory}
             onOpenChange={setIsAddingGalleryCategory}
           >
-            <DialogContent className="bg-gray-900 border border-gray-800 text-white">
+            <DialogContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-800 dark:text-white">
               <DialogHeader>
-                <DialogTitle className="text-gold">
+                <DialogTitle className="text-amber-600 dark:text-gold">
                   {editingItemId
                     ? "Edit Gallery Category"
                     : "Add New Gallery Category"}
@@ -1129,7 +1163,7 @@ const ContentManager = ({
                         name: e.target.value,
                       })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                   />
                 </div>
                 <div>
@@ -1144,10 +1178,10 @@ const ContentManager = ({
                         slug: e.target.value,
                       })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                     placeholder="e.g., vip, atmosphere, bar"
                   />
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                     Used for filtering gallery images. Use lowercase letters
                     without spaces.
                   </p>
@@ -1156,6 +1190,7 @@ const ContentManager = ({
               <DialogFooter>
                 <Button
                   variant="outline"
+                  className="border-gray-200 dark:border-gray-700"
                   onClick={() => {
                     setIsAddingGalleryCategory(false);
                     setEditingItemId(null);
@@ -1168,7 +1203,7 @@ const ContentManager = ({
                   Cancel
                 </Button>
                 <Button
-                  className="bg-gold text-black"
+                  className="bg-amber-600 dark:bg-gold text-white dark:text-black"
                   onClick={() => {
                     if (editingItemId) {
                       updateGalleryCategory(editingItemId, newGalleryCategory);
@@ -1194,9 +1229,9 @@ const ContentManager = ({
             open={isAddingGalleryImage}
             onOpenChange={setIsAddingGalleryImage}
           >
-            <DialogContent className="bg-gray-900 border border-gray-800 text-white">
+            <DialogContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-800 dark:text-white">
               <DialogHeader>
-                <DialogTitle className="text-gold">
+                <DialogTitle className="text-amber-600 dark:text-gold">
                   {editingItemId
                     ? "Edit Gallery Image"
                     : "Add New Gallery Image"}
@@ -1216,13 +1251,13 @@ const ContentManager = ({
                           image: e.target.value,
                         })
                       }
-                      className="bg-gray-800 border-gray-700"
+                      className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                       placeholder="Image URL"
                     />
                     <label className="cursor-pointer">
                       <Button
                         variant="outline"
-                        className="border-gold text-gold bg-black/40"
+                        className="border-amber-600 text-amber-600 bg-white/40 dark:border-gold dark:text-gold dark:bg-black/40"
                         type="button"
                         onClick={(e) => {
                           e.preventDefault();
@@ -1270,7 +1305,7 @@ const ContentManager = ({
                         caption: e.target.value,
                       })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                   />
                 </div>
                 <div>
@@ -1286,10 +1321,10 @@ const ContentManager = ({
                       })
                     }
                   >
-                    <SelectTrigger className="bg-gray-800 border-gray-700">
+                    <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                       <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-900 border-gray-700">
+                    <SelectContent className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
                       {(galleryCategoriesContent || []).map((category) => (
                         <SelectItem key={category.id} value={category.slug}>
                           {category.name}
@@ -1302,6 +1337,7 @@ const ContentManager = ({
               <DialogFooter>
                 <Button
                   variant="outline"
+                  className="border-gray-200 dark:border-gray-700"
                   onClick={() => {
                     setIsAddingGalleryImage(false);
                     setEditingItemId(null);
@@ -1315,7 +1351,7 @@ const ContentManager = ({
                   Cancel
                 </Button>
                 <Button
-                  className="bg-gold text-black"
+                  className="bg-amber-600 dark:bg-gold text-white dark:text-black"
                   onClick={() => {
                     if (editingItemId) {
                       // Update existing image
@@ -1341,8 +1377,10 @@ const ContentManager = ({
 
         {/* About Content */}
         <TabsContent value="about" className="space-y-6">
-          <div className="bg-gray-900 p-6 rounded-lg border border-gray-800">
-            <h2 className="text-xl font-bold mb-4 text-gold">About Section</h2>
+          <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-800">
+            <h2 className="text-xl font-bold mb-4 text-amber-600 dark:text-gold">
+              About Section
+            </h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Title</label>
@@ -1351,7 +1389,7 @@ const ContentManager = ({
                   onChange={(e) =>
                     setAboutContent({ ...aboutContent, title: e.target.value })
                   }
-                  className="bg-gray-800 border-gray-700"
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                 />
               </div>
               <div>
@@ -1366,7 +1404,7 @@ const ContentManager = ({
                       description: e.target.value,
                     })
                   }
-                  className="bg-gray-800 border-gray-700"
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                   rows={5}
                 />
               </div>
@@ -1378,7 +1416,7 @@ const ContentManager = ({
                   {aboutContent?.teamMembers?.map((member) => (
                     <div
                       key={member.id}
-                      className="bg-gray-800 p-4 rounded-lg border border-gray-700 flex items-center"
+                      className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 flex items-center"
                     >
                       <div className="w-12 h-12 mr-4 overflow-hidden rounded-full">
                         <img
@@ -1388,8 +1426,12 @@ const ContentManager = ({
                         />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-bold text-gold">{member.name}</h3>
-                        <p className="text-sm text-gray-400">{member.role}</p>
+                        <h3 className="font-bold text-amber-600 dark:text-gold">
+                          {member.name}
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          {member.role}
+                        </p>
                       </div>
                       <div className="flex space-x-2">
                         <Button
@@ -1430,7 +1472,7 @@ const ContentManager = ({
                   )) || []}
                   <Button
                     variant="outline"
-                    className="w-full border-dashed border-gold/50 bg-black/40"
+                    className="w-full border-dashed border-amber-600/50 dark:border-gold/50 bg-white/40 dark:bg-black/40"
                     onClick={() => setIsAddingTeamMember(true)}
                   >
                     <Users className="mr-2 h-4 w-4" />
@@ -1446,9 +1488,9 @@ const ContentManager = ({
             open={isAddingTeamMember}
             onOpenChange={setIsAddingTeamMember}
           >
-            <DialogContent className="bg-gray-900 border border-gray-800 text-white">
+            <DialogContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-800 dark:text-white">
               <DialogHeader>
-                <DialogTitle className="text-gold">
+                <DialogTitle className="text-amber-600 dark:text-gold">
                   {editingItemId ? "Edit Team Member" : "Add New Team Member"}
                 </DialogTitle>
               </DialogHeader>
@@ -1463,7 +1505,7 @@ const ContentManager = ({
                         name: e.target.value,
                       })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                   />
                 </div>
                 <div>
@@ -1476,7 +1518,7 @@ const ContentManager = ({
                         role: e.target.value,
                       })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                   />
                 </div>
                 <div>
@@ -1492,13 +1534,13 @@ const ContentManager = ({
                           image: e.target.value,
                         })
                       }
-                      className="bg-gray-800 border-gray-700"
+                      className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                       placeholder="Image URL or Avatar URL"
                     />
                     <label className="cursor-pointer">
                       <Button
                         variant="outline"
-                        className="border-gold text-gold bg-black/40"
+                        className="border-amber-600 text-amber-600 bg-white/40 dark:border-gold dark:text-gold dark:bg-black/40"
                         type="button"
                         onClick={(e) => {
                           e.preventDefault();
@@ -1537,6 +1579,7 @@ const ContentManager = ({
               <DialogFooter>
                 <Button
                   variant="outline"
+                  className="border-gray-200 dark:border-gray-700"
                   onClick={() => {
                     setIsAddingTeamMember(false);
                     setEditingItemId(null);
@@ -1550,7 +1593,7 @@ const ContentManager = ({
                   Cancel
                 </Button>
                 <Button
-                  className="bg-gold text-black"
+                  className="bg-amber-600 dark:bg-gold text-white dark:text-black"
                   onClick={() => {
                     if (editingItemId) {
                       updateTeamMember(editingItemId, newTeamMember);
@@ -1575,8 +1618,8 @@ const ContentManager = ({
 
         {/* Contact Content */}
         <TabsContent value="contact" className="space-y-6">
-          <div className="bg-gray-900 p-6 rounded-lg border border-gray-800">
-            <h2 className="text-xl font-bold mb-4 text-gold">
+          <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-800">
+            <h2 className="text-xl font-bold mb-4 text-amber-600 dark:text-gold">
               Contact Information
             </h2>
             <div className="space-y-4">
@@ -1592,7 +1635,7 @@ const ContentManager = ({
                       address: e.target.value,
                     })
                   }
-                  className="bg-gray-800 border-gray-700"
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                 />
               </div>
               <div>
@@ -1605,7 +1648,7 @@ const ContentManager = ({
                       phone: e.target.value,
                     })
                   }
-                  className="bg-gray-800 border-gray-700"
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                 />
               </div>
               <div>
@@ -1618,7 +1661,7 @@ const ContentManager = ({
                       email: e.target.value,
                     })
                   }
-                  className="bg-gray-800 border-gray-700"
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                   type="email"
                 />
               </div>
@@ -1632,7 +1675,7 @@ const ContentManager = ({
                       hours: e.target.value,
                     })
                   }
-                  className="bg-gray-800 border-gray-700"
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                 />
               </div>
               <div>
@@ -1647,7 +1690,7 @@ const ContentManager = ({
                       mapUrl: e.target.value,
                     })
                   }
-                  className="bg-gray-800 border-gray-700"
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                 />
               </div>
             </div>
@@ -1656,13 +1699,13 @@ const ContentManager = ({
 
         {/* Bottle Service Content */}
         <TabsContent value="bottleService" className="space-y-6">
-          <div className="bg-gray-900 p-6 rounded-lg border border-gray-800">
+          <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-800">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gold">
+              <h2 className="text-xl font-bold text-amber-600 dark:text-gold">
                 Bottle Service Packages
               </h2>
               <Button
-                className="bg-gold text-black"
+                className="bg-amber-600 dark:bg-gold text-white dark:text-black"
                 onClick={() => setIsAddingBottlePackage(true)}
               >
                 <GlassWater className="mr-2 h-4 w-4" />
@@ -1673,7 +1716,7 @@ const ContentManager = ({
               {bottleServiceContent?.map((package_) => (
                 <div
                   key={package_.id}
-                  className="bg-gray-800 p-4 rounded-lg border border-gray-700 flex"
+                  className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 flex"
                 >
                   <div className="w-24 h-24 mr-4 overflow-hidden rounded-md">
                     <img
@@ -1684,8 +1727,10 @@ const ContentManager = ({
                   </div>
                   <div className="flex-1">
                     <div className="flex justify-between">
-                      <h3 className="font-bold text-gold">{package_.name}</h3>
-                      <span className="text-gold font-bold">
+                      <h3 className="font-bold text-amber-600 dark:text-gold">
+                        {package_.name}
+                      </h3>
+                      <span className="text-amber-600 dark:text-gold font-bold">
                         {package_.price}
                       </span>
                     </div>
@@ -1737,9 +1782,9 @@ const ContentManager = ({
             open={isAddingBottlePackage}
             onOpenChange={setIsAddingBottlePackage}
           >
-            <DialogContent className="bg-gray-900 border border-gray-800 text-white">
+            <DialogContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-800 dark:text-white">
               <DialogHeader>
-                <DialogTitle className="text-gold">
+                <DialogTitle className="text-amber-600 dark:text-gold">
                   {editingItemId
                     ? "Edit Bottle Package"
                     : "Add New Bottle Package"}
@@ -1758,7 +1803,7 @@ const ContentManager = ({
                         name: e.target.value,
                       })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                   />
                 </div>
                 <div>
@@ -1773,7 +1818,7 @@ const ContentManager = ({
                         price: e.target.value,
                       })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                     placeholder="e.g., $500"
                   />
                 </div>
@@ -1789,7 +1834,7 @@ const ContentManager = ({
                         description: e.target.value,
                       })
                     }
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                     rows={3}
                   />
                 </div>
@@ -1806,13 +1851,13 @@ const ContentManager = ({
                           image: e.target.value,
                         })
                       }
-                      className="bg-gray-800 border-gray-700"
+                      className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                       placeholder="Image URL"
                     />
                     <label className="cursor-pointer">
                       <Button
                         variant="outline"
-                        className="border-gold text-gold bg-black/40"
+                        className="border-amber-600 text-amber-600 bg-white/40 dark:border-gold dark:text-gold dark:bg-black/40"
                         type="button"
                         onClick={(e) => {
                           e.preventDefault();
@@ -1852,6 +1897,7 @@ const ContentManager = ({
               <DialogFooter>
                 <Button
                   variant="outline"
+                  className="border-gray-200 dark:border-gray-700"
                   onClick={() => {
                     setIsAddingBottlePackage(false);
                     setEditingItemId(null);
@@ -1866,7 +1912,7 @@ const ContentManager = ({
                   Cancel
                 </Button>
                 <Button
-                  className="bg-gold text-black"
+                  className="bg-amber-600 dark:bg-gold text-white dark:text-black"
                   onClick={() => {
                     if (editingItemId) {
                       updateBottlePackage(editingItemId, newBottlePackage);
@@ -1892,34 +1938,36 @@ const ContentManager = ({
 
       {/* Preview Dialog */}
       <Dialog open={showPreview} onOpenChange={setShowPreview}>
-        <DialogContent className="bg-black border border-gold text-white max-w-4xl max-h-[80vh] overflow-auto">
+        <DialogContent className="bg-white dark:bg-black border border-gray-200 dark:border-gold text-gray-800 dark:text-white max-w-4xl max-h-[80vh] overflow-auto">
           <DialogHeader>
-            <DialogTitle className="text-gold">Content Preview</DialogTitle>
+            <DialogTitle className="text-amber-600 dark:text-gold">
+              Content Preview
+            </DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <div className="bg-gray-900 p-4 rounded-lg">
-              <h3 className="text-lg font-bold text-gold mb-2">
+            <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+              <h3 className="text-lg font-bold text-amber-600 dark:text-gold mb-2">
                 Preview of{" "}
                 {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Section
               </h3>
-              <p className="text-sm text-gray-400 mb-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
                 This is a preview of how your content will appear on the
                 website.
               </p>
 
               {/* Preview content based on active tab */}
-              <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 min-h-[300px]">
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 min-h-[300px]">
                 {activeTab === "hero" && (
                   <div className="text-center">
-                    <h1 className="text-3xl font-bold text-gold mb-2">
+                    <h1 className="text-3xl font-bold text-amber-600 dark:text-gold mb-2">
                       {heroContent.title}
                     </h1>
-                    <p className="text-xl text-gray-300 mb-4">
+                    <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">
                       {heroContent.subtitle}
                     </p>
                     {heroContent.videoUrl && (
-                      <div className="mt-4 bg-gray-900 p-2 rounded">
-                        <p className="text-sm text-gray-400">
+                      <div className="mt-4 bg-gray-50 dark:bg-gray-900 p-2 rounded">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
                           Video URL: {heroContent.videoUrl}
                         </p>
                       </div>
@@ -1932,7 +1980,7 @@ const ContentManager = ({
                     {eventsContent?.map((event) => (
                       <div
                         key={event.id}
-                        className="flex items-center space-x-4 border-b border-gray-700 pb-4"
+                        className="flex items-center space-x-4 border-b border-gray-200 dark:border-gray-700 pb-4"
                       >
                         <img
                           src={event.image}
@@ -1940,9 +1988,13 @@ const ContentManager = ({
                           className="w-16 h-16 object-cover rounded"
                         />
                         <div>
-                          <h3 className="font-bold text-gold">{event.title}</h3>
-                          <p className="text-sm text-gray-400">{event.date}</p>
-                          <p className="text-sm text-gray-300">
+                          <h3 className="font-bold text-amber-600 dark:text-gold">
+                            {event.title}
+                          </h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            {event.date}
+                          </p>
+                          <p className="text-sm text-gray-700 dark:text-gray-300">
                             {event.description}
                           </p>
                         </div>
@@ -1960,7 +2012,7 @@ const ContentManager = ({
                           alt={image.caption}
                           className="w-full h-24 object-cover rounded"
                         />
-                        <p className="text-xs text-gray-400 mt-1 truncate">
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 truncate">
                           {image.caption}
                         </p>
                       </div>
@@ -1970,13 +2022,13 @@ const ContentManager = ({
 
                 {activeTab === "about" && (
                   <div>
-                    <h2 className="text-xl font-bold text-gold mb-2">
+                    <h2 className="text-xl font-bold text-amber-600 dark:text-gold mb-2">
                       {aboutContent.title}
                     </h2>
-                    <p className="text-gray-300 mb-4">
+                    <p className="text-gray-700 dark:text-gray-300 mb-4">
                       {aboutContent.description}
                     </p>
-                    <h3 className="text-lg font-semibold text-gold mb-2">
+                    <h3 className="text-lg font-semibold text-amber-600 dark:text-gold mb-2">
                       Team
                     </h3>
                     <div className="flex space-x-4">
@@ -1987,10 +2039,12 @@ const ContentManager = ({
                             alt={member.name}
                             className="w-12 h-12 rounded-full mx-auto"
                           />
-                          <p className="text-sm font-medium text-white mt-1">
+                          <p className="text-sm font-medium text-gray-800 dark:text-white mt-1">
                             {member.name}
                           </p>
-                          <p className="text-xs text-gray-400">{member.role}</p>
+                          <p className="text-xs text-gray-600 dark:text-gray-400">
+                            {member.role}
+                          </p>
                         </div>
                       )) || []}
                     </div>
@@ -2000,20 +2054,36 @@ const ContentManager = ({
                 {activeTab === "contact" && (
                   <div className="space-y-3">
                     <div>
-                      <h3 className="font-semibold text-gold">Address:</h3>
-                      <p className="text-gray-300">{contactContent.address}</p>
+                      <h3 className="font-semibold text-amber-600 dark:text-gold">
+                        Address:
+                      </h3>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        {contactContent.address}
+                      </p>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gold">Phone:</h3>
-                      <p className="text-gray-300">{contactContent.phone}</p>
+                      <h3 className="font-semibold text-amber-600 dark:text-gold">
+                        Phone:
+                      </h3>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        {contactContent.phone}
+                      </p>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gold">Email:</h3>
-                      <p className="text-gray-300">{contactContent.email}</p>
+                      <h3 className="font-semibold text-amber-600 dark:text-gold">
+                        Email:
+                      </h3>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        {contactContent.email}
+                      </p>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gold">Hours:</h3>
-                      <p className="text-gray-300">{contactContent.hours}</p>
+                      <h3 className="font-semibold text-amber-600 dark:text-gold">
+                        Hours:
+                      </h3>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        {contactContent.hours}
+                      </p>
                     </div>
                   </div>
                 )}
@@ -2023,7 +2093,7 @@ const ContentManager = ({
                     {bottleServiceContent?.map((pkg) => (
                       <div
                         key={pkg.id}
-                        className="flex items-center space-x-4 border-b border-gray-700 pb-4"
+                        className="flex items-center space-x-4 border-b border-gray-200 dark:border-gray-700 pb-4"
                       >
                         <img
                           src={pkg.image}
@@ -2032,10 +2102,14 @@ const ContentManager = ({
                         />
                         <div className="flex-1">
                           <div className="flex justify-between">
-                            <h3 className="font-bold text-gold">{pkg.name}</h3>
-                            <span className="text-gold">{pkg.price}</span>
+                            <h3 className="font-bold text-amber-600 dark:text-gold">
+                              {pkg.name}
+                            </h3>
+                            <span className="text-amber-600 dark:text-gold">
+                              {pkg.price}
+                            </span>
                           </div>
-                          <p className="text-sm text-gray-300">
+                          <p className="text-sm text-gray-700 dark:text-gray-300">
                             {pkg.description}
                           </p>
                         </div>
@@ -2049,12 +2123,15 @@ const ContentManager = ({
           <DialogFooter>
             <Button
               variant="outline"
-              className="border-gold text-gold bg-black/40"
+              className="border-amber-600 text-amber-600 bg-white/40 dark:border-gold dark:text-gold dark:bg-black/40"
               onClick={() => setShowPreview(false)}
             >
               Close
             </Button>
-            <Button className="bg-gold text-black" onClick={handlePublish}>
+            <Button
+              className="bg-amber-600 dark:bg-gold text-white dark:text-black"
+              onClick={handlePublish}
+            >
               Publish Changes
             </Button>
           </DialogFooter>

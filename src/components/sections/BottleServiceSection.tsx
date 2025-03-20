@@ -100,13 +100,18 @@ const BottleServiceSection = ({
   ],
 }: BottleServiceSectionProps) => {
   return (
-    <section className="w-full py-20 bg-black text-white" id="bottle-service">
+    <section
+      className="w-full py-20 bg-white dark:bg-black text-black dark:text-white"
+      id="bottle-service"
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gold-500">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-amber-600 dark:text-gold-500">
             {title}
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">{subtitle}</p>
+          <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
+            {subtitle}
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -114,8 +119,10 @@ const BottleServiceSection = ({
             <Card
               key={pkg.id}
               className={cn(
-                "bg-gray-900 border-gray-800 overflow-hidden h-full flex flex-col",
-                pkg.featured ? "border-gold-500 ring-2 ring-gold-500/20" : "",
+                "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 overflow-hidden h-full flex flex-col shadow-md",
+                pkg.featured
+                  ? "border-amber-600 dark:border-gold-500 ring-2 ring-amber-600/20 dark:ring-gold-500/20"
+                  : "",
               )}
             >
               <div className="relative h-48 overflow-hidden">
@@ -125,38 +132,38 @@ const BottleServiceSection = ({
                   className="w-full h-full object-cover"
                 />
                 {pkg.featured && (
-                  <div className="absolute top-4 right-4 bg-gold-500 text-black text-xs font-bold px-3 py-1 rounded-full flex items-center">
+                  <div className="absolute top-4 right-4 bg-amber-600 dark:bg-gold-500 text-white dark:text-black text-xs font-bold px-3 py-1 rounded-full flex items-center">
                     <Star className="w-3 h-3 mr-1" />
                     MOST POPULAR
                   </div>
                 )}
               </div>
 
-              <CardHeader className="border-b border-gray-800">
+              <CardHeader className="border-b border-gray-200 dark:border-gray-800">
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle className="text-2xl text-gold-500">
+                    <CardTitle className="text-2xl text-amber-600 dark:text-gold-500">
                       {pkg.name}
                     </CardTitle>
-                    <CardDescription className="text-gray-400 mt-1">
+                    <CardDescription className="text-gray-600 dark:text-gray-400 mt-1">
                       {pkg.description}
                     </CardDescription>
                   </div>
-                  <div className="text-2xl font-bold text-gold-500">
+                  <div className="text-2xl font-bold text-amber-600 dark:text-gold-500">
                     {pkg.price}
                   </div>
                 </div>
               </CardHeader>
 
               <CardContent className="flex-grow py-6">
-                <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-4 flex items-center">
+                <h4 className="text-sm uppercase tracking-wider text-gray-600 dark:text-gray-400 mb-4 flex items-center">
                   <GlassWater className="w-4 h-4 mr-2" />
                   Package Includes:
                 </h4>
                 <ul className="space-y-3">
                   {pkg.includes.map((item, index) => (
                     <li key={index} className="flex items-start">
-                      <div className="mr-3 mt-1 text-gold-500">
+                      <div className="mr-3 mt-1 text-amber-600 dark:text-gold-500">
                         {item.includes("Bottle") ? (
                           <Wine className="w-4 h-4" />
                         ) : item.includes("guests") ? (
@@ -165,14 +172,16 @@ const BottleServiceSection = ({
                           <DollarSign className="w-4 h-4" />
                         )}
                       </div>
-                      <span className="text-gray-300">{item}</span>
+                      <span className="text-gray-700 dark:text-gray-300">
+                        {item}
+                      </span>
                     </li>
                   ))}
                 </ul>
               </CardContent>
 
-              <CardFooter className="pt-4 border-t border-gray-800">
-                <Button className="w-full bg-gold-500 text-black">
+              <CardFooter className="pt-4 border-t border-gray-200 dark:border-gray-800">
+                <Button className="w-full bg-amber-600 dark:bg-gold-500 text-white dark:text-black hover:bg-amber-700 dark:hover:bg-gold-600">
                   Reserve Now
                 </Button>
               </CardFooter>
@@ -181,14 +190,14 @@ const BottleServiceSection = ({
         </div>
 
         <div className="mt-16 text-center">
-          <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
             All packages require advance reservation. Prices do not include tax
             and gratuity. Special requests and custom packages available upon
             inquiry.
           </p>
           <Button
             variant="outline"
-            className="border-gold-500 text-gold-500 bg-gold-500/10"
+            className="border-amber-600 dark:border-gold-500 text-amber-600 dark:text-gold-500 bg-amber-600/10 dark:bg-gold-500/10 hover:bg-amber-600/20 dark:hover:bg-gold-500/20"
           >
             Contact for Custom Packages
           </Button>

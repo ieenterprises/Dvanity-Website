@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/context/ThemeContext";
 
 interface FooterProps {
   logo?: string;
@@ -38,19 +39,36 @@ const Footer = ({
     address: "123 Nightlife Ave, Los Angeles, CA 90001",
   },
 }: FooterProps) => {
+  const { theme } = useTheme();
+
   return (
-    <footer className="bg-black text-white border-t border-gold/30">
+    <footer
+      className={cn(
+        "border-t border-amber-500/30",
+        theme === "dark" ? "bg-black text-white" : "bg-white text-gray-800",
+      )}
+    >
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and About */}
           <div className="col-span-1">
             <div className="flex items-center mb-4">
-              <div className="w-12 h-12 bg-black border border-amber-500 flex items-center justify-center rounded-full mr-3">
+              <div
+                className={cn(
+                  "w-12 h-12 border border-amber-500 flex items-center justify-center rounded-full mr-3",
+                  theme === "dark" ? "bg-black" : "bg-amber-50",
+                )}
+              >
                 <span className="text-amber-500 font-bold text-xl">D</span>
               </div>
               <h3 className="text-2xl font-bold text-amber-500">DVANITY</h3>
             </div>
-            <p className="text-gray-400 mb-4">
+            <p
+              className={cn(
+                "mb-4",
+                theme === "dark" ? "text-gray-400" : "text-gray-600",
+              )}
+            >
               Experience the ultimate nightlife at Dvanity. Luxury, excitement,
               and unforgettable memories await you.
             </p>
@@ -59,7 +77,10 @@ const Footer = ({
                 href={socialLinks.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-black border border-amber-500 flex items-center justify-center"
+                className={cn(
+                  "w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center",
+                  theme === "dark" ? "bg-black" : "bg-amber-50",
+                )}
               >
                 <Facebook size={18} />
               </a>
@@ -67,7 +88,10 @@ const Footer = ({
                 href={socialLinks.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-black border border-amber-500 flex items-center justify-center"
+                className={cn(
+                  "w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center",
+                  theme === "dark" ? "bg-black" : "bg-amber-50",
+                )}
               >
                 <Instagram size={18} />
               </a>
@@ -75,7 +99,10 @@ const Footer = ({
                 href={socialLinks.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-black border border-amber-500 flex items-center justify-center"
+                className={cn(
+                  "w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center",
+                  theme === "dark" ? "bg-black" : "bg-amber-50",
+                )}
               >
                 <Twitter size={18} />
               </a>
@@ -89,32 +116,62 @@ const Footer = ({
             </h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-400">
+                <a
+                  href="#"
+                  className={
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }
+                >
                   Home
                 </a>
               </li>
               <li>
-                <a href="#events" className="text-gray-400">
+                <a
+                  href="#events"
+                  className={
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }
+                >
                   Events
                 </a>
               </li>
               <li>
-                <a href="#gallery" className="text-gray-400">
+                <a
+                  href="#gallery"
+                  className={
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }
+                >
                   Gallery
                 </a>
               </li>
               <li>
-                <a href="#about" className="text-gray-400">
+                <a
+                  href="#about"
+                  className={
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }
+                >
                   About
                 </a>
               </li>
               <li>
-                <a href="#contact" className="text-gray-400">
+                <a
+                  href="#contact"
+                  className={
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }
+                >
                   Contact
                 </a>
               </li>
               <li>
-                <a href="#bottle-service" className="text-gray-400">
+                <a
+                  href="#bottle-service"
+                  className={
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }
+                >
                   Bottle Service
                 </a>
               </li>
@@ -132,14 +189,25 @@ const Footer = ({
                   className="mr-2 text-amber-500 flex-shrink-0 mt-1"
                   size={18}
                 />
-                <span className="text-gray-400">{contactInfo.address}</span>
+                <span
+                  className={
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }
+                >
+                  {contactInfo.address}
+                </span>
               </li>
               <li className="flex items-center">
                 <Phone
                   className="mr-2 text-amber-500 flex-shrink-0"
                   size={18}
                 />
-                <a href={`tel:${contactInfo.phone}`} className="text-gray-400">
+                <a
+                  href={`tel:${contactInfo.phone}`}
+                  className={
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }
+                >
                   {contactInfo.phone}
                 </a>
               </li>
@@ -147,7 +215,9 @@ const Footer = ({
                 <Mail className="mr-2 text-amber-500 flex-shrink-0" size={18} />
                 <a
                   href={`mailto:${contactInfo.email}`}
-                  className="text-gray-400"
+                  className={
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }
                 >
                   {contactInfo.email}
                 </a>
@@ -160,14 +230,22 @@ const Footer = ({
             <h4 className="text-xl font-semibold mb-4 text-amber-500">
               Newsletter
             </h4>
-            <p className="text-gray-400 mb-4">
+            <p
+              className={cn(
+                "mb-4",
+                theme === "dark" ? "text-gray-400" : "text-gray-600",
+              )}
+            >
               Subscribe to our newsletter for exclusive updates and offers.
             </p>
             <div className="flex flex-col space-y-3">
               <Input
                 type="email"
                 placeholder="Your email address"
-                className="bg-gray-900 border-amber-500/30 focus-visible:ring-amber-500"
+                className={cn(
+                  "border-amber-500/30 focus-visible:ring-amber-500",
+                  theme === "dark" ? "bg-gray-900" : "bg-gray-100",
+                )}
               />
               <Button className="bg-amber-500 text-black font-semibold">
                 Subscribe
@@ -176,8 +254,18 @@ const Footer = ({
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-6 text-center">
-          <p className="text-gray-500 text-sm">
+        <div
+          className={cn(
+            "border-t mt-12 pt-6 text-center",
+            theme === "dark" ? "border-gray-800" : "border-gray-200",
+          )}
+        >
+          <p
+            className={cn(
+              "text-sm",
+              theme === "dark" ? "text-gray-500" : "text-gray-400",
+            )}
+          >
             &copy; {new Date().getFullYear()} Dvanity Night Club. All rights
             reserved.
           </p>

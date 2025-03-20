@@ -46,7 +46,8 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
   ];
 
   const navbarClasses = cn("fixed w-full z-50 transition-all duration-300", {
-    "bg-black/90 backdrop-blur-sm shadow-lg": !transparent || scrolled,
+    "bg-white/90 dark:bg-black/90 backdrop-blur-sm shadow-lg":
+      !transparent || scrolled,
     "bg-transparent": transparent && !scrolled,
   });
 
@@ -56,7 +57,7 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-2xl font-bold text-gold-500 bg-gradient-to-r from-amber-400 to-yellow-600 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold text-gold-500 bg-gradient-to-r from-amber-500 to-yellow-700 dark:from-amber-400 dark:to-yellow-600 bg-clip-text text-transparent">
               DVANITY
             </span>
           </Link>
@@ -69,7 +70,7 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
                 href={
                   link.path === "/" ? "/" : `#${link.path.replace("/", "")}`
                 }
-                className="text-white font-medium"
+                className="text-gray-800 dark:text-white font-medium hover:text-amber-600 dark:hover:text-amber-500"
               >
                 {link.name}
               </a>
@@ -81,7 +82,7 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
             <Link to="/admin">
               <Button
                 variant="outline"
-                className="border-amber-400 text-amber-400 bg-amber-400/10"
+                className="border-amber-600 dark:border-amber-400 text-amber-600 dark:text-amber-400 bg-amber-600/10 dark:bg-amber-400/10 hover:bg-amber-600/20 dark:hover:bg-amber-400/20"
               >
                 <User className="mr-2 h-4 w-4" />
                 Admin
@@ -107,7 +108,7 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden bg-black/95 absolute left-0 right-0 top-16 p-4 border-t border-amber-900/30">
+          <div className="md:hidden bg-white/95 dark:bg-black/95 absolute left-0 right-0 top-16 p-4 border-t border-amber-600/30 dark:border-amber-900/30 transition-colors duration-200">
             <div className="flex flex-col space-y-4">
               {navLinks.map((link) => (
                 <a
@@ -115,7 +116,7 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
                   href={
                     link.path === "/" ? "/" : `#${link.path.replace("/", "")}`
                   }
-                  className="text-white py-2 font-medium"
+                  className="text-gray-800 dark:text-white py-2 font-medium hover:text-amber-600 dark:hover:text-amber-500"
                   onClick={() => setIsOpen(false)}
                 >
                   {link.name}
@@ -123,7 +124,7 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
               ))}
               <Link
                 to="/admin"
-                className="text-amber-400 py-2 font-medium flex items-center"
+                className="text-amber-600 dark:text-amber-400 py-2 font-medium flex items-center hover:text-amber-700 dark:hover:text-amber-500"
                 onClick={() => setIsOpen(false)}
               >
                 <User className="mr-2 h-4 w-4" />

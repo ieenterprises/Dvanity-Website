@@ -58,19 +58,21 @@ const Dashboard = ({
   };
 
   return (
-    <div className="flex h-screen w-full bg-black text-white overflow-hidden">
+    <div className="flex h-screen w-full bg-gray-50 dark:bg-black text-gray-800 dark:text-white overflow-hidden transition-colors duration-200">
       {/* Sidebar */}
       <Sidebar onLogout={handleLogout} />
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header with status indicators */}
-        <header className="h-16 border-b border-gold/20 flex items-center justify-between px-6">
+        <header className="h-16 border-b border-gray-200 dark:border-gold/20 flex items-center justify-between px-6 bg-white dark:bg-black transition-colors duration-200">
           <div className="flex items-center">
-            <h1 className="text-xl font-bold text-gold">Dashboard</h1>
-            <span className="ml-4 text-sm text-gray-400">
+            <h1 className="text-xl font-bold text-amber-600 dark:text-gold">
+              Dashboard
+            </h1>
+            <span className="ml-4 text-sm text-gray-500 dark:text-gray-400">
               Editing:{" "}
-              <span className="text-gold">
+              <span className="text-amber-600 dark:text-gold">
                 {selectedSection.charAt(0).toUpperCase() +
                   selectedSection.slice(1)}
               </span>

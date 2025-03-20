@@ -16,13 +16,17 @@ const TeamMember = ({
   bio = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vel ultricies lacinia, nisl nisl aliquam nisl.",
 }: TeamMemberProps) => {
   return (
-    <div className="flex flex-col items-center p-6 bg-black border border-gold/20 rounded-lg">
-      <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-2 border-gold">
+    <div className="flex flex-col items-center p-6 bg-white dark:bg-black border border-amber-600/20 dark:border-gold/20 rounded-lg shadow-md">
+      <div className="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-2 border-amber-600 dark:border-gold">
         <img src={image} alt={name} className="w-full h-full object-cover" />
       </div>
-      <h3 className="text-xl font-bold text-gold mb-1">{name}</h3>
-      <p className="text-sm text-gold/70 mb-3">{role}</p>
-      <p className="text-gray-300 text-center text-sm">{bio}</p>
+      <h3 className="text-xl font-bold text-amber-600 dark:text-gold mb-1">
+        {name}
+      </h3>
+      <p className="text-sm text-amber-600/70 dark:text-gold/70 mb-3">{role}</p>
+      <p className="text-gray-700 dark:text-gray-300 text-center text-sm">
+        {bio}
+      </p>
     </div>
   );
 };
@@ -70,37 +74,52 @@ const AboutSection = ({
   ],
 }: AboutSectionProps) => {
   return (
-    <section id="about" className="py-20 bg-black text-white">
+    <section
+      id="about"
+      className="py-20 bg-black dark:bg-black bg-white text-black dark:text-white"
+    >
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gold mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-amber-600 dark:text-gold mb-4">
             {title}
           </h2>
-          <p className="text-xl text-gold/70 mb-8">{subtitle}</p>
-          <div className="w-24 h-1 bg-gold mx-auto"></div>
+          <p className="text-xl text-amber-600/70 dark:text-gold/70 mb-8">
+            {subtitle}
+          </p>
+          <div className="w-24 h-1 bg-amber-600 dark:bg-gold mx-auto"></div>
         </div>
 
         {/* Main Description */}
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <p className="text-lg text-gray-300 leading-relaxed">{description}</p>
+          <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+            {description}
+          </p>
         </div>
 
         {/* History and Mission */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
-          <div className="bg-gray-900/50 p-8 rounded-lg border border-gold/20">
-            <h3 className="text-2xl font-bold text-gold mb-4">Our History</h3>
-            <p className="text-gray-300 leading-relaxed">{history}</p>
+          <div className="bg-gray-100/80 dark:bg-gray-900/50 p-8 rounded-lg border border-amber-600/20 dark:border-gold/20">
+            <h3 className="text-2xl font-bold text-amber-600 dark:text-gold mb-4">
+              Our History
+            </h3>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+              {history}
+            </p>
           </div>
-          <div className="bg-gray-900/50 p-8 rounded-lg border border-gold/20">
-            <h3 className="text-2xl font-bold text-gold mb-4">Our Mission</h3>
-            <p className="text-gray-300 leading-relaxed">{mission}</p>
+          <div className="bg-gray-100/80 dark:bg-gray-900/50 p-8 rounded-lg border border-amber-600/20 dark:border-gold/20">
+            <h3 className="text-2xl font-bold text-amber-600 dark:text-gold mb-4">
+              Our Mission
+            </h3>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+              {mission}
+            </p>
           </div>
         </div>
 
         {/* Team Section */}
         <div className="mb-16">
-          <h3 className="text-3xl font-bold text-gold text-center mb-12">
+          <h3 className="text-3xl font-bold text-amber-600 dark:text-gold text-center mb-12">
             Meet Our Team
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -112,12 +131,12 @@ const AboutSection = ({
 
         {/* CTA */}
         <div className="text-center">
-          <p className="text-xl text-gray-300 mb-6">
+          <p className="text-xl text-gray-700 dark:text-gray-300 mb-6">
             Experience the luxury and excitement of Dvanity Night Club
           </p>
           <Button
             variant="outline"
-            className="border-gold text-gold bg-gold/10 text-lg px-8 py-3"
+            className="border-amber-600 dark:border-gold text-amber-600 dark:text-gold bg-amber-600/10 dark:bg-gold/10 text-lg px-8 py-3"
           >
             Reserve Your Table
           </Button>
