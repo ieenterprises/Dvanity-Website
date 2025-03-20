@@ -12,7 +12,8 @@ import {
   Phone,
   Wine,
   LogOut,
-  Settings,
+  Navigation,
+  LayoutGrid,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -62,9 +63,14 @@ const Sidebar = ({
       path: "/admin/dashboard?section=bottle-service",
     },
     {
-      name: "Settings",
-      icon: <Settings className="mr-2 h-5 w-5" />,
-      path: "/admin/dashboard?section=settings",
+      name: "Navigation Bar",
+      icon: <Navigation className="mr-2 h-5 w-5" />,
+      path: "/admin/dashboard?section=navbar",
+    },
+    {
+      name: "Footer",
+      icon: <LayoutGrid className="mr-2 h-5 w-5" />,
+      path: "/admin/dashboard?section=footer",
     },
   ];
 
