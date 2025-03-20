@@ -1,0 +1,114 @@
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import {
+  Home,
+  Video,
+  Calendar,
+  Image,
+  Info,
+  Phone,
+  Wine,
+  LogOut,
+  Settings,
+} from "lucide-react";
+
+interface SidebarProps {
+  onLogout?: () => void;
+}
+
+const Sidebar = ({
+  onLogout = () => console.log("Logout clicked"),
+}: SidebarProps) => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  const menuItems = [
+    {
+      name: "Dashboard",
+      icon: <Home className="mr-2 h-5 w-5" />,
+      path: "/admin/dashboard",
+    },
+    {
+      name: "Hero Section",
+      icon: <Video className="mr-2 h-5 w-5" />,
+      path: "/admin/dashboard?section=hero",
+    },
+    {
+      name: "Events",
+      icon: <Calendar className="mr-2 h-5 w-5" />,
+      path: "/admin/dashboard?section=events",
+    },
+    {
+      name: "Gallery",
+      icon: <Image className="mr-2 h-5 w-5" />,
+      path: "/admin/dashboard?section=gallery",
+    },
+    {
+      name: "About",
+      icon: <Info className="mr-2 h-5 w-5" />,
+      path: "/admin/dashboard?section=about",
+    },
+    {
+      name: "Contact",
+      icon: <Phone className="mr-2 h-5 w-5" />,
+      path: "/admin/dashboard?section=contact",
+    },
+    {
+      name: "Bottle Service",
+      icon: <Wine className="mr-2 h-5 w-5" />,
+      path: "/admin/dashboard?section=bottle-service",
+    },
+    {
+      name: "Settings",
+      icon: <Settings className="mr-2 h-5 w-5" />,
+      path: "/admin/dashboard?section=settings",
+    },
+  ];
+
+  const isActive = (path: string) => {
+    if (path.includes("?")) {
+      const [basePath, queryString] = path.split("?");
+      return currentPath === basePath && location.search.includes(queryString);
+    }
+    return currentPath === path;
+  };
+
+  return (
+    <div className="h-full w-[280px] bg-black border-r border-gold/20 flex flex-col p-4 text-white">
+      <div className="flex items-center justify-center py-6">
+        <h1 className="text-2xl font-bold text-gold">Dvanity Admin</h1>
+      </div>
+
+      <Separator className="my-4 bg-gold/20" />
+
+      <nav className="flex-1 space-y-2">
+        {menuItems.map((item) => (
+          <Link to={item.path} key={item.name}>
+            <Button
+              variant={isActive(item.path) ? "default" : "ghost"}
+              className={`w-full justify-start ${isActive(item.path) ? "bg-gold text-black" : "text-gold bg-black/40"}`}
+            >
+              {item.icon}
+              {item.name}
+            </Button>
+          </Link>
+        ))}
+      </nav>
+
+      <Separator className="my-4 bg-gold/20" />
+
+      <Button
+        variant="outline"
+        className="mt-auto border-gold/30 text-gold bg-black/40"
+        onClick={onLogout}
+      >
+        <LogOut className="mr-2 h-5 w-5" />
+        Logout
+      </Button>
+    </div>
+  );
+};
+
+export default Sidebar;
