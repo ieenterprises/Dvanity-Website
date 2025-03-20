@@ -6,11 +6,15 @@ import {
   Mail,
   Phone,
   MapPin,
+  Linkedin,
+  Youtube,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/ThemeContext";
+import { useContent } from "@/context/ContentContext";
 
 interface FooterProps {
   logo?: string;
@@ -40,6 +44,16 @@ const Footer = ({
   },
 }: FooterProps) => {
   const { theme } = useTheme();
+  const { content } = useContent();
+
+  // Get footer content from context
+  const footerContent = content?.footer;
+  const footerSocialLinks = footerContent?.socialLinks || [];
+  const quickLinks = footerContent?.quickLinks || [];
+  const newsletterEnabled = footerContent?.newsletterEnabled !== false;
+  const copyrightText =
+    footerContent?.copyrightText ||
+    `&copy; ${new Date().getFullYear()} Dvanity Night Club. All rights reserved.`;
 
   return (
     <footer
@@ -73,39 +87,81 @@ const Footer = ({
               and unforgettable memories await you.
             </p>
             <div className="flex space-x-4">
-              <a
-                href={socialLinks.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  "w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center",
-                  theme === "dark" ? "bg-black" : "bg-amber-50",
-                )}
-              >
-                <Facebook size={18} />
-              </a>
-              <a
-                href={socialLinks.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  "w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center",
-                  theme === "dark" ? "bg-black" : "bg-amber-50",
-                )}
-              >
-                <Instagram size={18} />
-              </a>
-              <a
-                href={socialLinks.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  "w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center",
-                  theme === "dark" ? "bg-black" : "bg-amber-50",
-                )}
-              >
-                <Twitter size={18} />
-              </a>
+              {footerSocialLinks.length > 0 ? (
+                footerSocialLinks.map((link) => (
+                  <a
+                    key={link.id}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center",
+                      theme === "dark" ? "bg-black" : "bg-amber-50",
+                    )}
+                  >
+                    {link.platform.toLowerCase() === "facebook" && (
+                      <Facebook size={18} />
+                    )}
+                    {link.platform.toLowerCase() === "instagram" && (
+                      <Instagram size={18} />
+                    )}
+                    {link.platform.toLowerCase() === "twitter" && (
+                      <Twitter size={18} />
+                    )}
+                    {link.platform.toLowerCase() === "linkedin" && (
+                      <Linkedin size={18} />
+                    )}
+                    {link.platform.toLowerCase() === "youtube" && (
+                      <Youtube size={18} />
+                    )}
+                    {![
+                      "facebook",
+                      "instagram",
+                      "twitter",
+                      "linkedin",
+                      "youtube",
+                    ].includes(link.platform.toLowerCase()) && (
+                      <ExternalLink size={18} />
+                    )}
+                  </a>
+                ))
+              ) : (
+                <>
+                  <a
+                    href={socialLinks.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center",
+                      theme === "dark" ? "bg-black" : "bg-amber-50",
+                    )}
+                  >
+                    <Facebook size={18} />
+                  </a>
+                  <a
+                    href={socialLinks.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center",
+                      theme === "dark" ? "bg-black" : "bg-amber-50",
+                    )}
+                  >
+                    <Instagram size={18} />
+                  </a>
+                  <a
+                    href={socialLinks.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center",
+                      theme === "dark" ? "bg-black" : "bg-amber-50",
+                    )}
+                  >
+                    <Twitter size={18} />
+                  </a>
+                </>
+              )}
             </div>
           </div>
 
@@ -115,66 +171,83 @@ const Footer = ({
               Quick Links
             </h4>
             <ul className="space-y-2">
-              <li>
-                <a
-                  href="#"
-                  className={
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
-                  }
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#events"
-                  className={
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
-                  }
-                >
-                  Events
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#gallery"
-                  className={
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
-                  }
-                >
-                  Gallery
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#about"
-                  className={
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
-                  }
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#contact"
-                  className={
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
-                  }
-                >
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#bottle-service"
-                  className={
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
-                  }
-                >
-                  Bottle Service
-                </a>
-              </li>
+              {quickLinks.length > 0 ? (
+                quickLinks.map((link) => (
+                  <li key={link.id}>
+                    <a
+                      href={link.path}
+                      className={
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
+                      }
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li>
+                    <a
+                      href="#"
+                      className={
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
+                      }
+                    >
+                      Home
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#events"
+                      className={
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
+                      }
+                    >
+                      Events
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#gallery"
+                      className={
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
+                      }
+                    >
+                      Gallery
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#about"
+                      className={
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
+                      }
+                    >
+                      About
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#contact"
+                      className={
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
+                      }
+                    >
+                      Contact
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#bottle-service"
+                      className={
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
+                      }
+                    >
+                      Bottle Service
+                    </a>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
 
@@ -226,32 +299,34 @@ const Footer = ({
           </div>
 
           {/* Newsletter */}
-          <div className="col-span-1">
-            <h4 className="text-xl font-semibold mb-4 text-amber-500">
-              Newsletter
-            </h4>
-            <p
-              className={cn(
-                "mb-4",
-                theme === "dark" ? "text-gray-400" : "text-gray-600",
-              )}
-            >
-              Subscribe to our newsletter for exclusive updates and offers.
-            </p>
-            <div className="flex flex-col space-y-3">
-              <Input
-                type="email"
-                placeholder="Your email address"
+          {newsletterEnabled && (
+            <div className="col-span-1">
+              <h4 className="text-xl font-semibold mb-4 text-amber-500">
+                Newsletter
+              </h4>
+              <p
                 className={cn(
-                  "border-amber-500/30 focus-visible:ring-amber-500",
-                  theme === "dark" ? "bg-gray-900" : "bg-gray-100",
+                  "mb-4",
+                  theme === "dark" ? "text-gray-400" : "text-gray-600",
                 )}
-              />
-              <Button className="bg-amber-500 text-black font-semibold">
-                Subscribe
-              </Button>
+              >
+                Subscribe to our newsletter for exclusive updates and offers.
+              </p>
+              <div className="flex flex-col space-y-3">
+                <Input
+                  type="email"
+                  placeholder="Your email address"
+                  className={cn(
+                    "border-amber-500/30 focus-visible:ring-amber-500",
+                    theme === "dark" ? "bg-gray-900" : "bg-gray-100",
+                  )}
+                />
+                <Button className="bg-amber-500 text-black font-semibold">
+                  Subscribe
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div
@@ -266,8 +341,10 @@ const Footer = ({
               theme === "dark" ? "text-gray-500" : "text-gray-400",
             )}
           >
-            &copy; {new Date().getFullYear()} Dvanity Night Club. All rights
-            reserved.
+            {copyrightText.replace(
+              "{new Date().getFullYear()}",
+              new Date().getFullYear().toString(),
+            )}
           </p>
         </div>
       </div>

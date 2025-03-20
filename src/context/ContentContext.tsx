@@ -64,6 +64,36 @@ type BottleServicePackage = {
   image: string;
 };
 
+type NavLink = {
+  id: string;
+  name: string;
+  path: string;
+};
+
+type NavbarContent = {
+  links: NavLink[];
+  adminButtonText: string;
+};
+
+type SocialLink = {
+  id: string;
+  platform: string;
+  url: string;
+};
+
+type QuickLink = {
+  id: string;
+  name: string;
+  path: string;
+};
+
+type FooterContent = {
+  socialLinks: SocialLink[];
+  quickLinks: QuickLink[];
+  newsletterEnabled: boolean;
+  copyrightText: string;
+};
+
 type ContentState = {
   hero: HeroContent;
   events: EventContent[];
@@ -73,6 +103,8 @@ type ContentState = {
   about: AboutContent;
   contact: ContactContent;
   bottleService: BottleServicePackage[];
+  navbar: NavbarContent;
+  footer: FooterContent;
 };
 
 type ContentContextType = {
@@ -106,6 +138,17 @@ type ContentContextType = {
   addBottlePackage: (pkg: BottleServicePackage) => void;
   updateBottlePackage: (id: string, pkg: Partial<BottleServicePackage>) => void;
   deleteBottlePackage: (id: string) => void;
+  updateNavbar: (data: NavbarContent) => void;
+  addNavLink: (link: NavLink) => void;
+  updateNavLink: (id: string, link: Partial<NavLink>) => void;
+  deleteNavLink: (id: string) => void;
+  updateFooter: (data: FooterContent) => void;
+  addSocialLink: (link: SocialLink) => void;
+  updateSocialLink: (id: string, link: Partial<SocialLink>) => void;
+  deleteSocialLink: (id: string) => void;
+  addQuickLink: (link: QuickLink) => void;
+  updateQuickLink: (id: string, link: Partial<QuickLink>) => void;
+  deleteQuickLink: (id: string) => void;
 };
 
 // Initial state with default values
@@ -258,6 +301,34 @@ const initialContent: ContentState = {
         "https://images.unsplash.com/photo-1605270012917-bf357a1fae9e?w=800&q=80",
     },
   ],
+  navbar: {
+    links: [
+      { id: "1", name: "Home", path: "/" },
+      { id: "2", name: "Events", path: "events" },
+      { id: "3", name: "Gallery", path: "gallery" },
+      { id: "4", name: "About", path: "about" },
+      { id: "5", name: "Contact", path: "contact" },
+      { id: "6", name: "Bottle Service", path: "bottle-service" },
+    ],
+    adminButtonText: "Admin",
+  },
+  footer: {
+    socialLinks: [
+      { id: "1", platform: "Facebook", url: "https://facebook.com/dvanity" },
+      { id: "2", platform: "Instagram", url: "https://instagram.com/dvanity" },
+      { id: "3", platform: "Twitter", url: "https://twitter.com/dvanity" },
+    ],
+    quickLinks: [
+      { id: "1", name: "Home", path: "#" },
+      { id: "2", name: "Events", path: "#events" },
+      { id: "3", name: "Gallery", path: "#gallery" },
+      { id: "4", name: "About", path: "#about" },
+      { id: "5", name: "Contact", path: "#contact" },
+      { id: "6", name: "Bottle Service", path: "#bottle-service" },
+    ],
+    newsletterEnabled: true,
+    copyrightText: "© Dvanity Night Club. All rights reserved.",
+  },
 };
 
 // Create the context
@@ -470,6 +541,115 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({
     }));
   };
 
+  // Navbar functions
+  const updateNavbar = (data: NavbarContent) => {
+    setContent((prev) => ({ ...prev, navbar: data }));
+  };
+
+  const addNavLink = (link: NavLink) => {
+    const newLink = { ...link, id: generateId() };
+    setContent((prev) => ({
+      ...prev,
+      navbar: {
+        ...prev.navbar,
+        links: [...prev.navbar.links, newLink],
+      },
+    }));
+  };
+
+  const updateNavLink = (id: string, link: Partial<NavLink>) => {
+    setContent((prev) => ({
+      ...prev,
+      navbar: {
+        ...prev.navbar,
+        links: prev.navbar.links.map((l) =>
+          l.id === id ? { ...l, ...link } : l,
+        ),
+      },
+    }));
+  };
+
+  const deleteNavLink = (id: string) => {
+    setContent((prev) => ({
+      ...prev,
+      navbar: {
+        ...prev.navbar,
+        links: prev.navbar.links.filter((l) => l.id !== id),
+      },
+    }));
+  };
+
+  // Footer functions
+  const updateFooter = (data: FooterContent) => {
+    setContent((prev) => ({ ...prev, footer: data }));
+  };
+
+  const addSocialLink = (link: SocialLink) => {
+    const newLink = { ...link, id: generateId() };
+    setContent((prev) => ({
+      ...prev,
+      footer: {
+        ...prev.footer,
+        socialLinks: [...prev.footer.socialLinks, newLink],
+      },
+    }));
+  };
+
+  const updateSocialLink = (id: string, link: Partial<SocialLink>) => {
+    setContent((prev) => ({
+      ...prev,
+      footer: {
+        ...prev.footer,
+        socialLinks: prev.footer.socialLinks.map((l) =>
+          l.id === id ? { ...l, ...link } : l,
+        ),
+      },
+    }));
+  };
+
+  const deleteSocialLink = (id: string) => {
+    setContent((prev) => ({
+      ...prev,
+      footer: {
+        ...prev.footer,
+        socialLinks: prev.footer.socialLinks.filter((l) => l.id !== id),
+      },
+    }));
+  };
+
+  const addQuickLink = (link: QuickLink) => {
+    const newLink = { ...link, id: generateId() };
+    setContent((prev) => ({
+      ...prev,
+      footer: {
+        ...prev.footer,
+        quickLinks: [...prev.footer.quickLinks, newLink],
+      },
+    }));
+  };
+
+  const updateQuickLink = (id: string, link: Partial<QuickLink>) => {
+    setContent((prev) => ({
+      ...prev,
+      footer: {
+        ...prev.footer,
+        quickLinks: prev.footer.quickLinks.map((l) =>
+          l.id === id ? { ...l, ...link } : l,
+        ),
+      },
+    }));
+  };
+
+  const deleteQuickLink = (id: string) => {
+    setContent((prev) => ({
+      ...prev,
+      footer: {
+        ...prev.footer,
+        quickLinks: prev.footer.quickLinks.filter((l) => l.id !== id),
+      },
+    }));
+  };
+
   const value = {
     content,
     updateHero,
@@ -498,6 +678,17 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({
     addBottlePackage,
     updateBottlePackage,
     deleteBottlePackage,
+    updateNavbar,
+    addNavLink,
+    updateNavLink,
+    deleteNavLink,
+    updateFooter,
+    addSocialLink,
+    updateSocialLink,
+    deleteSocialLink,
+    addQuickLink,
+    updateQuickLink,
+    deleteQuickLink,
   };
 
   return (
