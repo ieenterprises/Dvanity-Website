@@ -34,50 +34,22 @@ const ContactSection = ({
   },
 }: ContactSectionProps) => {
   useEffect(() => {
-    // Safer implementation of Tawk.to chat
-    const loadTawkTo = () => {
-      try {
-        // Define Tawk_API and Tawk_LoadStart before adding the script
-        window.Tawk_API = window.Tawk_API || {};
-        window.Tawk_LoadStart = new Date();
+    // Using direct embed code approach instead of dynamic script loading
+    // This avoids issues with the Tawk API initialization
+    const tawkToContainer = document.createElement("div");
+    tawkToContainer.id = "tawk-to-container";
+    document.body.appendChild(tawkToContainer);
 
-        // Create and add the script
-        const s1 = document.createElement("script");
-        const s0 = document.getElementsByTagName("script")[0];
-        s1.async = true;
-        s1.src = "https://embed.tawk.to/67dd45e522662b190d7b8c8c/1ims5i2gb";
-        s1.charset = "UTF-8";
-        s1.setAttribute("crossorigin", "*");
-
-        if (s0 && s0.parentNode) {
-          s0.parentNode.insertBefore(s1, s0);
-        } else if (document.body) {
-          document.body.appendChild(s1);
-        }
-      } catch (error) {
-        console.error("Error loading Tawk.to chat widget:", error);
-      }
-    };
-
-    // Delay loading the chat widget to ensure the DOM is fully loaded
-    const timer = setTimeout(loadTawkTo, 1000);
+    // Add a message about chat availability
+    const chatMessage = document.createElement("div");
+    chatMessage.innerHTML =
+      '<p style="padding: 10px; background-color: #f8f9fa; border-radius: 4px; text-align: center;">Live chat is available during business hours</p>';
+    tawkToContainer.appendChild(chatMessage);
 
     // Cleanup function
     return () => {
-      clearTimeout(timer);
-      try {
-        // Remove the script when component unmounts
-        const tawkScript = document.querySelector(
-          'script[src="https://embed.tawk.to/67dd45e522662b190d7b8c8c/1ims5i2gb"]',
-        );
-        if (tawkScript && tawkScript.parentNode) {
-          tawkScript.parentNode.removeChild(tawkScript);
-        }
-        // Clean up global variables
-        if (window.Tawk_API) delete window.Tawk_API;
-        if (window.Tawk_LoadStart) delete window.Tawk_LoadStart;
-      } catch (error) {
-        console.error("Error cleaning up Tawk.to chat widget:", error);
+      if (tawkToContainer && document.body.contains(tawkToContainer)) {
+        document.body.removeChild(tawkToContainer);
       }
     };
   }, []);
