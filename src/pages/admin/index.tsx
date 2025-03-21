@@ -41,9 +41,18 @@ const AdminLoginPage = () => {
       if (error) {
         setError(error.message);
         console.error("Login error:", error);
+        setIsLoading(false);
       } else {
         console.log("Login successful, user:", data?.user);
-        // Check if we have a profile with a business
+
+        // If login is successful, immediately redirect to dashboard
+        if (data?.user) {
+          // Keep loading state true during redirect
+          navigate("/admin/dashboard");
+          return; // Exit early to keep loading indicator during navigation
+        }
+
+        // Only check for business profile if we haven't redirected yet
         if (data?.user && !profile?.business_id) {
           console.log(
             "No business associated with profile, checking/repairing...",
@@ -55,14 +64,13 @@ const AdminLoginPage = () => {
             );
           }
         }
-        // Successful login - redirect will happen via the useEffect
+        setIsLoading(false);
       }
     } catch (err: any) {
       setError(
         err.message || "An error occurred during login. Please try again.",
       );
       console.error("Login error exception:", err);
-    } finally {
       setIsLoading(false);
     }
   };

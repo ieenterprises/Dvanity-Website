@@ -36,9 +36,8 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+// Using named function declaration for consistent component exports with Fast Refresh
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<any | null>(null);
@@ -167,35 +166,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       console.log("Login successful:", data);
 
-      // After successful login, check and repair profile if needed
+      // After successful login, set user immediately to trigger redirects
       if (data.user) {
-        try {
-          // Set the user immediately to trigger redirects
-          setUser(data.user);
-          setSession(data.session);
+        // Set the user and session immediately to trigger redirects
+        setUser(data.user);
+        setSession(data.session);
 
-          // Then fetch profile in background
-          const profileData = await fetchProfile(data.user.id);
-          console.log("Profile after login:", profileData);
+        // Start profile fetch in background but don't wait for it
+        const fetchProfileAsync = async () => {
+          try {
+            const profileData = await fetchProfile(data.user.id);
+            console.log("Profile after login:", profileData);
 
-          // If no profile or no business, try to repair
-          if (!profileData || !profileData.business_id) {
-            console.log("No business ID found, attempting repair");
-            await checkAndRepairUserProfile();
+            // If no profile or no business, try to repair in background
+            if (!profileData || !profileData.business_id) {
+              console.log("No business ID found, attempting repair");
+              try {
+                await checkAndRepairUserProfile();
+              } catch (err) {
+                console.error("Error repairing profile:", err);
+              }
+            }
+          } catch (profileErr) {
+            console.error("Error handling profile after login:", profileErr);
+          } finally {
+            // Set loading to false after profile is fetched
+            setLoading(false);
           }
+        };
 
-          // Ensure loading is set to false after profile is fetched
-          setLoading(false);
-        } catch (profileErr) {
-          console.error("Error handling profile after login:", profileErr);
-          // Continue anyway - we'll handle missing profile in the dashboard
-          setLoading(false);
-        }
+        // Execute the async function
+        fetchProfileAsync();
+
+        // Return immediately to allow redirect to happen
+        return { data, error: null };
       } else {
         setLoading(false);
+        return { data, error: null };
       }
-
-      return { data, error: null };
     } catch (err: any) {
       console.error("Exception in signIn:", err);
       setAuthError(err.message || "An unexpected error occurred during login");
@@ -207,11 +215,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const signOut = async () => {
     try {
       setAuthError(null);
-      await supabase.auth.signOut();
+      setLoading(true);
+      // First clear local state
+      setUser(null);
+      setSession(null);
       setProfile(null);
+      // Then sign out from Supabase
+      await supabase.auth.signOut();
+      // Force redirect to login page
+      window.location.replace("/admin");
     } catch (err: any) {
       console.error("Error signing out:", err);
       setAuthError(err.message || "An error occurred during logout");
+      setLoading(false);
+      // Even if there's an error, try to redirect
+      window.location.replace("/admin");
     }
   };
 
@@ -342,12 +360,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+}
 
-export const useAuth = () => {
+export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-};
+}

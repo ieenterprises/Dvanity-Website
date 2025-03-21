@@ -26,11 +26,10 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
     checkAndRepairUserProfile,
   } = useAuth();
 
-  // Update local loading state when auth loading changes
+  // Set loading to false immediately when auth loading completes
   useEffect(() => {
     if (!authLoading) {
-      // Give a small delay to ensure profile data is processed
-      setTimeout(() => setLoading(false), 1000);
+      setLoading(false);
     }
   }, [authLoading]);
 
@@ -54,13 +53,13 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
       return;
     }
 
-    // Force loading to false after a timeout to prevent infinite loading
+    // Force loading to false after a short timeout to prevent infinite loading
     const timer = setTimeout(() => {
       if (loading) {
         console.log("Forcing loading state to false after timeout");
         setLoading(false);
       }
-    }, 5000);
+    }, 2000);
 
     // If user exists but no business is associated
     if (user && !profile?.business_id) {
@@ -93,8 +92,10 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
 
   // Handle logout
   const handleLogout = async () => {
+    setLoading(true);
     await signOut();
-    navigate("/admin");
+    // Navigation is now handled directly in the signOut function
+    // with a hard redirect to ensure all state is cleared
   };
 
   // Handle preview mode
@@ -114,23 +115,7 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
     setHasChanges(true);
   };
 
-  // Show loading state, but with a button to force continue if stuck
-  if (loading) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-gray-50 dark:bg-black text-gray-800 dark:text-white">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-t-gold border-gray-200 rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="mb-4">Loading dashboard...</p>
-          <Button
-            onClick={() => setLoading(false)}
-            className="bg-gold text-black font-bold mt-4"
-          >
-            Continue to Dashboard
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  // Instead of a full-page loading screen, we'll show a small loading indicator in the header if needed
 
   return (
     <div className="flex h-screen w-full bg-gray-50 dark:bg-black text-gray-800 dark:text-white overflow-hidden transition-colors duration-200">
@@ -173,6 +158,9 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
                   selectedSection.slice(1)}
               </span>
             </span>
+            {loading && (
+              <div className="ml-4 w-5 h-5 border-2 border-t-gold border-gray-200 rounded-full animate-spin"></div>
+            )}
           </div>
           <div className="flex items-center space-x-4">
             {hasChanges && (
