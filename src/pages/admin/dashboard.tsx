@@ -93,15 +93,8 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
 
   // Handle logout
   const handleLogout = async () => {
-    console.log("Logging out user");
-    try {
-      await signOut();
-      console.log("Signout successful, redirecting to login");
-      // Force navigation to home page first
-      window.location.href = "/";
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
+    await signOut();
+    navigate("/admin");
   };
 
   // Handle preview mode

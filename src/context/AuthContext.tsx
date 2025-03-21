@@ -36,7 +36,9 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<any | null>(null);
@@ -205,24 +207,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signOut = async () => {
     try {
       setAuthError(null);
-      console.log("Signing out user");
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.error("Supabase signOut error:", error);
-        throw error;
-      }
-      // Clear all auth state
-      setUser(null);
-      setSession(null);
+      await supabase.auth.signOut();
       setProfile(null);
-      // Clear any stored auth data
-      localStorage.removeItem("supabase.auth.token");
-      console.log("Sign out complete, state cleared");
-      return;
     } catch (err: any) {
       console.error("Error signing out:", err);
       setAuthError(err.message || "An error occurred during logout");
-      throw err;
     }
   };
 
