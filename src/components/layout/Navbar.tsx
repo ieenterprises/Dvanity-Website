@@ -93,17 +93,20 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
             ))}
           </div>
 
-          {/* Admin Login Button (Desktop) */}
-          <div className="hidden md:block">
-            <Link to="/admin">
-              <Button
-                variant="outline"
-                className="border-amber-600 dark:border-amber-400 text-amber-600 dark:text-amber-400 bg-amber-600/10 dark:bg-amber-400/10 hover:bg-amber-600/20 dark:hover:bg-amber-400/20"
-              >
-                <User className="mr-2 h-4 w-4" />
-                {adminButtonText}
-              </Button>
-            </Link>
+          {/* Admin Login Button (Desktop) - Hidden until hover */}
+          <div className="hidden md:block group relative">
+            <div className="absolute inset-0 w-32 h-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <Link to="/admin">
+                <Button
+                  variant="outline"
+                  className="border-amber-600 dark:border-amber-400 text-amber-600 dark:text-amber-400 bg-amber-600/10 dark:bg-amber-400/10 hover:bg-amber-600/20 dark:hover:bg-amber-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  <User className="mr-2 h-4 w-4" />
+                  {adminButtonText}
+                </Button>
+              </Link>
+            </div>
+            <div className="w-32 h-10"></div>
           </div>
 
           {/* Mobile Menu Button */}

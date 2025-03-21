@@ -26,48 +26,6 @@ const ContactSection = ({
     ],
   },
 }: ContactSectionProps) => {
-  React.useEffect(() => {
-    // Add Tawk.to script
-    const tawkScript = document.createElement("script");
-    tawkScript.id = "tawk-to-script";
-    tawkScript.innerHTML = `
-      var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-      (function(){
-        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/67dd45e522662b190d7b8c8c/1ims5i2gb';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
-      })();
-    `;
-
-    // Only add if it doesn't exist already
-    if (!document.getElementById("tawk-to-script")) {
-      document.body.appendChild(tawkScript);
-    }
-
-    // Cleanup function
-    return () => {
-      // Find and remove the script if it exists
-      const script = document.getElementById("tawk-to-script");
-      if (script) {
-        script.remove();
-      }
-
-      // Remove the widget iframe if it exists
-      const tawkIframe = document.getElementById("tawkIframe");
-      if (tawkIframe) {
-        tawkIframe.remove();
-      }
-
-      // Clean up any Tawk global variables
-      if (window && window.Tawk_API) {
-        window.Tawk_API = undefined;
-      }
-    };
-  }, []);
-
   return (
     <section
       id="contact"
@@ -150,33 +108,33 @@ const ContactSection = ({
             </div>
           </div>
 
-          {/* Live Chat Information */}
+          {/* Contact Form Information */}
           <div className="bg-gray-100 dark:bg-gray-900 p-8 rounded-lg border border-amber-600/30 dark:border-yellow-600/30 shadow-lg shadow-amber-600/10 dark:shadow-yellow-600/10">
             <h3 className="text-2xl font-bold mb-6 text-amber-600 dark:text-yellow-500">
-              Live Chat Support
+              Contact Us
             </h3>
 
             <div className="flex items-start mb-6">
               <MessageSquare className="h-6 w-6 text-amber-600 dark:text-yellow-500 mr-4 mt-1 flex-shrink-0" />
               <div>
-                <h4 className="font-semibold text-lg">Chat With Us</h4>
+                <h4 className="font-semibold text-lg">Get In Touch</h4>
                 <p className="text-gray-700 dark:text-gray-300 mb-4">
                   Our team is available to assist you with reservations, bottle
                   service, private events, or any questions you might have about
                   Dvanity Night Club.
                 </p>
                 <p className="text-gray-700 dark:text-gray-300">
-                  Use the chat widget in the corner of your screen to start a
-                  conversation with our team.
+                  Email us at {contactInfo.email} or call us at{" "}
+                  {contactInfo.phone} for immediate assistance.
                 </p>
               </div>
             </div>
 
             <div className="bg-amber-100 dark:bg-amber-900/30 border border-amber-500 text-amber-700 dark:text-amber-300 p-4 rounded-md">
-              <p className="font-medium">Looking for immediate assistance?</p>
+              <p className="font-medium">Planning a special event?</p>
               <p className="text-sm mt-1">
-                Our live chat representatives are available during business
-                hours to help with your inquiries.
+                Contact us in advance to discuss private events, VIP services,
+                and special arrangements for your celebration.
               </p>
             </div>
           </div>
