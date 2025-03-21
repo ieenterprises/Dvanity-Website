@@ -1,6 +1,14 @@
 import React, { useEffect } from "react";
 import { MapPin, Phone, Clock, Mail, MessageSquare } from "lucide-react";
 
+// Add TypeScript interface for the Tawk global variables
+declare global {
+  interface Window {
+    Tawk_API?: any;
+    Tawk_LoadStart?: Date;
+  }
+}
+
 interface ContactSectionProps {
   contactInfo?: {
     address: string;
@@ -26,7 +34,13 @@ const ContactSection = ({
   },
 }: ContactSectionProps) => {
   useEffect(() => {
-    // Add Tawk.to script
+    // Define Tawk_API and Tawk_LoadStart before adding the script
+    var Tawk_API = window.Tawk_API || {};
+    var Tawk_LoadStart = new Date();
+    window.Tawk_API = Tawk_API;
+    window.Tawk_LoadStart = Tawk_LoadStart;
+
+    // Add Tawk.to script using the exact implementation from the snippet
     const s1 = document.createElement("script");
     const s0 = document.getElementsByTagName("script")[0];
     s1.async = true;
@@ -48,6 +62,9 @@ const ContactSection = ({
       if (tawkScript && tawkScript.parentNode) {
         tawkScript.parentNode.removeChild(tawkScript);
       }
+      // Clean up global variables
+      delete window.Tawk_API;
+      delete window.Tawk_LoadStart;
     };
   }, []);
 

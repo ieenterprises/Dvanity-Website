@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 
@@ -11,17 +11,55 @@ interface HeroSectionProps {
 }
 
 const HeroSection = ({
-  videoSrc = "/club-video-background.mp4",
+  videoSrc = "https://www.youtube.com/embed/UzswywOA1qU?si=3ysTlaHhKToQonD9&autoplay=1&mute=1&loop=1&playlist=UzswywOA1qU&controls=0&showinfo=0&rel=0",
   title = "DVANITY",
   tagline = "LUXURY NIGHTLIFE EXPERIENCE",
   ctaText = "RESERVE NOW",
   onCtaClick = () => console.log("CTA clicked"),
 }: HeroSectionProps) => {
+  // Function to determine if the video source is a YouTube embed link
+  const isYouTubeEmbed = useMemo(() => {
+    return (
+      typeof videoSrc === "string" &&
+      (videoSrc.includes("youtube.com/embed/") ||
+        (videoSrc.includes("<iframe") && videoSrc.includes("youtube.com")))
+    );
+  }, [videoSrc]);
+
+  // Extract YouTube embed URL from iframe string if needed
+  const getYouTubeEmbedUrl = useMemo(() => {
+    if (!videoSrc || typeof videoSrc !== "string") return null;
+
+    // If it's already a direct embed URL, return it
+    if (videoSrc.startsWith("https://www.youtube.com/embed/")) {
+      return videoSrc;
+    }
+
+    // If it's an iframe string, extract the src attribute
+    if (videoSrc.includes("<iframe") && videoSrc.includes('src="')) {
+      const srcMatch = videoSrc.match(/src=\"([^\"]+)\"/i);
+      return srcMatch ? srcMatch[1] : null;
+    }
+
+    return null;
+  }, [videoSrc]);
+
   return (
     <section className="relative h-[800px] w-full overflow-hidden bg-black">
       {/* Video Background with Fallback */}
       <div className="absolute inset-0 z-0">
-        {videoSrc ? (
+        {isYouTubeEmbed && getYouTubeEmbedUrl ? (
+          <div className="relative w-full h-full">
+            <iframe
+              className="absolute top-0 left-0 w-full h-full object-cover"
+              src={getYouTubeEmbedUrl}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
+          </div>
+        ) : videoSrc ? (
           <video
             className="h-full w-full object-cover"
             autoPlay
@@ -65,7 +103,12 @@ const HeroSection = ({
             <Button
               variant="ghost"
               className="flex items-center space-x-2 text-amber-400"
-              onClick={() => console.log("Watch video clicked")}
+              onClick={() =>
+                window.open(
+                  "https://www.youtube.com/watch?v=UzswywOA1qU",
+                  "_blank",
+                )
+              }
             >
               <Play className="h-5 w-5" />
               <span>Watch Teaser</span>

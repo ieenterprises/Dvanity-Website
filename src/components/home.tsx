@@ -1,5 +1,4 @@
 import React from "react";
-import HeroSection from "./sections/HeroSection";
 import EventsSection from "./sections/EventsSection";
 import GallerySection from "./sections/GallerySection";
 import AboutSection from "./sections/AboutSection";
@@ -8,6 +7,7 @@ import BottleServiceSection from "./sections/BottleServiceSection";
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
 import { useContent } from "@/context/ContentContext";
+import YouTubeHeroDemo from "@/tempobook/storyboards/15d92a90-f680-4787-9d7a-23419d9e3195";
 
 const Home = () => {
   // Get content from context
@@ -18,14 +18,8 @@ const Home = () => {
       {/* Navbar */}
       <Navbar transparent={true} />
 
-      {/* Hero Section with Video Background */}
-      <HeroSection
-        videoSrc={content.hero.videoUrl}
-        title={content.hero.title}
-        tagline={content.hero.subtitle}
-        ctaText="RESERVE NOW"
-        onCtaClick={() => console.log("Reserve button clicked")}
-      />
+      {/* YouTube Hero Section */}
+      <YouTubeHeroDemo />
 
       {/* Events Calendar Section */}
       <EventsSection events={content.events} />
