@@ -76,9 +76,9 @@ const LoginForm = ({
             />
           ) : (
             <img
-              src="/logo-placeholder.png"
+              src="/logo.ico"
               alt="Business Logo"
-              className="h-16 w-auto"
+              className="h-16 w-auto object-contain"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.src =

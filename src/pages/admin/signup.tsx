@@ -148,9 +148,16 @@ const AdminSignup = () => {
                   className="h-16 w-auto object-contain"
                 />
               ) : (
-                <div className="h-16 w-16 bg-gold/20 rounded-full flex items-center justify-center">
-                  <Building className="h-8 w-8 text-gold" />
-                </div>
+                <img
+                  src="/logo.ico"
+                  alt="Business Logo"
+                  className="h-16 w-auto object-contain"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src =
+                      "https://api.dicebear.com/7.x/initials/svg?seed=DV&backgroundColor=gold&textColor=black";
+                  }}
+                />
               )}
             </div>
             <CardTitle className="text-2xl font-bold text-center text-gold">
