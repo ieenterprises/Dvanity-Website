@@ -1,13 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { MapPin, Phone, Clock, Mail, MessageSquare } from "lucide-react";
-
-// Add TypeScript interface for the Tawk global variables
-declare global {
-  interface Window {
-    Tawk_API?: any;
-    Tawk_LoadStart?: Date;
-  }
-}
 
 interface ContactSectionProps {
   contactInfo?: {
@@ -34,30 +26,44 @@ const ContactSection = ({
     ],
   },
 }: ContactSectionProps) => {
-  useEffect(() => {
-    // Initialize Tawk.to chat widget
-    window.Tawk_API = window.Tawk_API || {};
-    window.Tawk_LoadStart = new Date();
+  React.useEffect(() => {
+    // Add Tawk.to script
+    const tawkScript = document.createElement("script");
+    tawkScript.id = "tawk-to-script";
+    tawkScript.innerHTML = `
+      var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+      (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/67dd45e522662b190d7b8c8c/1ims5i2gb';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+      })();
+    `;
 
-    const s1 = document.createElement("script");
-    const s0 = document.getElementsByTagName("script")[0];
-
-    s1.async = true;
-    s1.src = "https://embed.tawk.to/67dd45e522662b190d7b8c8c/1ims5i2gb";
-    s1.charset = "UTF-8";
-    s1.setAttribute("crossorigin", "*");
-
-    if (s0 && s0.parentNode) {
-      s0.parentNode.insertBefore(s1, s0);
-    } else if (document.head) {
-      document.head.appendChild(s1);
+    // Only add if it doesn't exist already
+    if (!document.getElementById("tawk-to-script")) {
+      document.body.appendChild(tawkScript);
     }
 
     // Cleanup function
     return () => {
-      // Remove the script if component unmounts
-      if (s1 && s1.parentNode) {
-        s1.parentNode.removeChild(s1);
+      // Find and remove the script if it exists
+      const script = document.getElementById("tawk-to-script");
+      if (script) {
+        script.remove();
+      }
+
+      // Remove the widget iframe if it exists
+      const tawkIframe = document.getElementById("tawkIframe");
+      if (tawkIframe) {
+        tawkIframe.remove();
+      }
+
+      // Clean up any Tawk global variables
+      if (window && window.Tawk_API) {
+        window.Tawk_API = undefined;
       }
     };
   }, []);
