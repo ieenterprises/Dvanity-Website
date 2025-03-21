@@ -1,15 +1,30 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import LoginForm from "../../components/admin/LoginForm";
 import { useTheme } from "@/context/ThemeContext";
+import { useAuth } from "@/context/AuthContext";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const AdminLoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [businessInfo, setBusinessInfo] = useState<{
+    name?: string;
+    logo?: string;
+  }>({});
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { signIn, user, profile, checkAndRepairUserProfile } = useAuth();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    console.log("Login page effect - User:", user, "Profile:", profile);
+    if (user) {
+      // Redirect to dashboard even if no business is associated
+      navigate("/admin/dashboard");
+    }
+  }, [user, navigate]);
 
   const handleLogin = async (values: {
     email: string;
@@ -20,28 +35,33 @@ const AdminLoginPage = () => {
     setError("");
 
     try {
-      // Simulate authentication delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      console.log("Attempting login for:", values.email);
+      const { data, error } = await signIn(values.email, values.password);
 
-      // Mock authentication - in a real app, this would call an auth API
-      if (
-        values.email === "admin@dvanity.com" &&
-        values.password === "password123"
-      ) {
-        // Store auth state (would use a proper auth context in a real app)
-        localStorage.setItem("isAuthenticated", "true");
-        if (values.rememberMe) {
-          localStorage.setItem("rememberAdmin", "true");
-        }
-
-        // Redirect to dashboard
-        navigate("/admin/dashboard");
+      if (error) {
+        setError(error.message);
+        console.error("Login error:", error);
       } else {
-        setError("Invalid email or password");
+        console.log("Login successful, user:", data?.user);
+        // Check if we have a profile with a business
+        if (data?.user && !profile?.business_id) {
+          console.log(
+            "No business associated with profile, checking/repairing...",
+          );
+          const repaired = await checkAndRepairUserProfile();
+          if (!repaired) {
+            setError(
+              "Your account exists but has no business associated. Please try signing up again or contact support.",
+            );
+          }
+        }
+        // Successful login - redirect will happen via the useEffect
       }
-    } catch (err) {
-      setError("An error occurred during login. Please try again.");
-      console.error("Login error:", err);
+    } catch (err: any) {
+      setError(
+        err.message || "An error occurred during login. Please try again.",
+      );
+      console.error("Login error exception:", err);
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +83,13 @@ const AdminLoginPage = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/90 dark:from-black/80 dark:via-black/70 dark:to-black/90 transition-colors duration-200" />
 
       <div className="relative z-10 w-full max-w-md px-4 py-8">
-        <LoginForm onSubmit={handleLogin} isLoading={isLoading} error={error} />
+        <LoginForm
+          onSubmit={handleLogin}
+          isLoading={isLoading}
+          error={error}
+          businessLogo={businessInfo.logo}
+          businessName={businessInfo.name}
+        />
 
         <div className="mt-8 flex items-center justify-between">
           <a

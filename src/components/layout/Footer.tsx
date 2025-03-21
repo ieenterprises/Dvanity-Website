@@ -67,15 +67,25 @@ const Footer = ({
           {/* Logo and About */}
           <div className="col-span-1">
             <div className="flex items-center mb-4">
-              <div
-                className={cn(
-                  "w-12 h-12 border border-amber-500 flex items-center justify-center rounded-full mr-3",
-                  theme === "dark" ? "bg-black" : "bg-amber-50",
-                )}
-              >
-                <span className="text-amber-500 font-bold text-xl">D</span>
-              </div>
-              <h3 className="text-2xl font-bold text-amber-500">DVANITY</h3>
+              {footerContent?.logo ? (
+                <img
+                  src={footerContent.logo}
+                  alt="Dvanity"
+                  className="h-12 w-auto object-contain mr-3"
+                />
+              ) : (
+                <>
+                  <div
+                    className={cn(
+                      "w-12 h-12 border border-amber-500 flex items-center justify-center rounded-full mr-3",
+                      theme === "dark" ? "bg-black" : "bg-amber-50",
+                    )}
+                  >
+                    <span className="text-amber-500 font-bold text-xl">D</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-amber-500">DVANITY</h3>
+                </>
+              )}
             </div>
             <p
               className={cn(

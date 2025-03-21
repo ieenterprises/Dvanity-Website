@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 
 // Define types for our content sections
 type HeroContent = {
@@ -73,6 +74,7 @@ type NavLink = {
 type NavbarContent = {
   links: NavLink[];
   adminButtonText: string;
+  logo?: string;
 };
 
 type SocialLink = {
@@ -92,6 +94,7 @@ type FooterContent = {
   quickLinks: QuickLink[];
   newsletterEnabled: boolean;
   copyrightText: string;
+  logo?: string;
 };
 
 type ContentState = {
@@ -311,6 +314,7 @@ const initialContent: ContentState = {
       { id: "6", name: "Bottle Service", path: "bottle-service" },
     ],
     adminButtonText: "Admin",
+    logo: "",
   },
   footer: {
     socialLinks: [
@@ -328,6 +332,7 @@ const initialContent: ContentState = {
     ],
     newsletterEnabled: true,
     copyrightText: "© Dvanity Night Club. All rights reserved.",
+    logo: "",
   },
 };
 
@@ -341,8 +346,8 @@ const generateId = () => Math.random().toString(36).substr(2, 9);
 export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // Try to load content from localStorage, or use initial content
   const [content, setContent] = useState<ContentState>(() => {
+    // Try to load content from localStorage, or use initial content
     const savedContent = localStorage.getItem("dvanityContent");
     return savedContent ? JSON.parse(savedContent) : initialContent;
   });

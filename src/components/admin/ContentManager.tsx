@@ -2147,9 +2147,68 @@ const ContentManager = ({
 
             <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
               <h2 className="text-xl font-bold mb-4 text-amber-600 dark:text-gold">
-                Admin Button Settings
+                Logo & Admin Button Settings
               </h2>
               <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    Business Logo
+                  </label>
+                  <div className="flex items-center space-x-4">
+                    <Input
+                      value={navbarContent?.logo || ""}
+                      onChange={(e) =>
+                        setNavbarContent({
+                          ...navbarContent,
+                          logo: e.target.value,
+                        })
+                      }
+                      className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                      placeholder="Logo URL"
+                    />
+                    <label className="cursor-pointer">
+                      <Button
+                        variant="outline"
+                        className="border-amber-600 text-amber-600 bg-white/40 dark:border-gold dark:text-gold dark:bg-black/40"
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const input = e.currentTarget
+                            .nextElementSibling as HTMLInputElement;
+                          if (input) input.click();
+                        }}
+                      >
+                        <Upload className="mr-2 h-4 w-4" />
+                        Upload
+                      </Button>
+                      <input
+                        type="file"
+                        className="hidden"
+                        onChange={(e) =>
+                          handleImageUpload(e, (url) =>
+                            setNavbarContent({
+                              ...navbarContent,
+                              logo: url,
+                            }),
+                          )
+                        }
+                      />
+                    </label>
+                  </div>
+                  {navbarContent?.logo && (
+                    <div className="mt-2">
+                      <img
+                        src={navbarContent.logo}
+                        alt="Logo Preview"
+                        className="h-12 w-auto rounded-md object-contain bg-gray-100 dark:bg-gray-800 p-2"
+                      />
+                    </div>
+                  )}
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                    This logo will appear in the navigation bar. Recommended
+                    size: 150x50px.
+                  </p>
+                </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">
                     Admin Button Text
@@ -2409,6 +2468,65 @@ const ContentManager = ({
                 Footer Settings
               </h2>
               <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    Footer Logo
+                  </label>
+                  <div className="flex items-center space-x-4">
+                    <Input
+                      value={footerContent?.logo || ""}
+                      onChange={(e) =>
+                        setFooterContent({
+                          ...footerContent,
+                          logo: e.target.value,
+                        })
+                      }
+                      className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                      placeholder="Logo URL"
+                    />
+                    <label className="cursor-pointer">
+                      <Button
+                        variant="outline"
+                        className="border-amber-600 text-amber-600 bg-white/40 dark:border-gold dark:text-gold dark:bg-black/40"
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const input = e.currentTarget
+                            .nextElementSibling as HTMLInputElement;
+                          if (input) input.click();
+                        }}
+                      >
+                        <Upload className="mr-2 h-4 w-4" />
+                        Upload
+                      </Button>
+                      <input
+                        type="file"
+                        className="hidden"
+                        onChange={(e) =>
+                          handleImageUpload(e, (url) =>
+                            setFooterContent({
+                              ...footerContent,
+                              logo: url,
+                            }),
+                          )
+                        }
+                      />
+                    </label>
+                  </div>
+                  {footerContent?.logo && (
+                    <div className="mt-2">
+                      <img
+                        src={footerContent.logo}
+                        alt="Logo Preview"
+                        className="h-12 w-auto rounded-md object-contain bg-gray-100 dark:bg-gray-800 p-2"
+                      />
+                    </div>
+                  )}
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                    This logo will appear in the footer. Recommended size:
+                    150x50px.
+                  </p>
+                </div>
                 <div className="flex items-center justify-between">
                   <label className="text-sm font-medium">
                     Enable Newsletter Signup
@@ -2808,6 +2926,18 @@ const ContentManager = ({
 
                 {activeTab === "navbar" && (
                   <div className="space-y-4">
+                    {navbarContent?.logo && (
+                      <div className="mb-4">
+                        <span className="font-medium">Logo:</span>
+                        <div className="mt-2 bg-gray-100 dark:bg-gray-800 p-2 rounded flex justify-center">
+                          <img
+                            src={navbarContent.logo}
+                            alt="Logo"
+                            className="h-10 object-contain"
+                          />
+                        </div>
+                      </div>
+                    )}
                     <div className="flex items-center justify-between bg-gray-100 dark:bg-gray-800 p-2 rounded">
                       <span className="font-medium">Navigation Links:</span>
                       <span className="text-sm">
@@ -2835,6 +2965,20 @@ const ContentManager = ({
 
                 {activeTab === "footer" && (
                   <div className="space-y-4">
+                    {footerContent?.logo && (
+                      <div className="mb-4">
+                        <span className="font-semibold text-amber-600 dark:text-gold mb-2">
+                          Logo:
+                        </span>
+                        <div className="mt-2 bg-gray-100 dark:bg-gray-800 p-2 rounded flex justify-center">
+                          <img
+                            src={footerContent.logo}
+                            alt="Footer Logo"
+                            className="h-10 object-contain"
+                          />
+                        </div>
+                      </div>
+                    )}
                     <div>
                       <h3 className="font-semibold text-amber-600 dark:text-gold mb-2">
                         Social Links:

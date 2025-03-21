@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import ThemeToggle from "./ThemeToggle";
+import { useAuth } from "@/context/AuthContext";
 import {
   Home,
   Video,
@@ -14,6 +15,7 @@ import {
   LogOut,
   Navigation,
   LayoutGrid,
+  User,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -25,6 +27,8 @@ const Sidebar = ({
 }: SidebarProps) => {
   const location = useLocation();
   const currentPath = location.pathname;
+  const { profile } = useAuth();
+  const businessName = profile?.businesses?.name || "Business";
 
   const menuItems = [
     {
@@ -85,9 +89,23 @@ const Sidebar = ({
   return (
     <div className="h-full w-[280px] bg-white dark:bg-black border-r border-gray-200 dark:border-gold/20 flex flex-col p-4 text-gray-800 dark:text-white transition-colors duration-200">
       <div className="flex items-center justify-center py-6">
+        {profile?.businesses?.logo ? (
+          <img
+            src={profile.businesses.logo}
+            alt={businessName}
+            className="h-10 w-auto object-contain mr-2"
+          />
+        ) : null}
         <h1 className="text-2xl font-bold text-gold dark:text-gold text-amber-600">
-          Dvanity Admin
+          {businessName} Admin
         </h1>
+      </div>
+
+      <div className="flex items-center justify-center mb-4">
+        <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+          <User className="h-4 w-4" />
+          <span>{profile?.id ? profile.id.split("-")[0] : "Admin"}</span>
+        </div>
       </div>
 
       <Separator className="my-4 bg-gold/20" />

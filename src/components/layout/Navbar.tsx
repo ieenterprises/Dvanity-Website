@@ -63,9 +63,17 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-2xl font-bold text-gold-500 bg-gradient-to-r from-amber-500 to-yellow-700 dark:from-amber-400 dark:to-yellow-600 bg-clip-text text-transparent">
-              DVANITY
-            </span>
+            {content?.navbar?.logo ? (
+              <img
+                src={content.navbar.logo}
+                alt="Dvanity"
+                className="h-10 w-auto object-contain"
+              />
+            ) : (
+              <span className="text-2xl font-bold text-gold-500 bg-gradient-to-r from-amber-500 to-yellow-700 dark:from-amber-400 dark:to-yellow-600 bg-clip-text text-transparent">
+                DVANITY
+              </span>
+            )}
           </Link>
 
           {/* Desktop Navigation */}
