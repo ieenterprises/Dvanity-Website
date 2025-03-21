@@ -324,6 +324,16 @@ const initialContent: ContentState = {
       { id: "1", platform: "Facebook", url: "https://facebook.com/dvanity" },
       { id: "2", platform: "Instagram", url: "https://instagram.com/dvanity" },
       { id: "3", platform: "Twitter", url: "https://twitter.com/dvanity" },
+      {
+        id: "4",
+        platform: "LinkedIn",
+        url: "https://linkedin.com/company/dvanity",
+      },
+      {
+        id: "5",
+        platform: "Google Business",
+        url: "https://business.google.com/dvanity",
+      },
     ],
     quickLinks: [
       { id: "1", name: "Home", path: "#" },

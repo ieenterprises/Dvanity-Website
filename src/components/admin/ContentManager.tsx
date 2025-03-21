@@ -35,11 +35,15 @@ import {
   LayoutGrid,
   Facebook,
   Instagram,
-  Twitter,
+  X,
   Link as LinkIcon,
   ExternalLink,
   Mail,
   Switch,
+  Linkedin,
+  Youtube,
+  Building2,
+  Globe,
 } from "lucide-react";
 import { useContent } from "@/context/ContentContext";
 import { uploadImage, uploadFile, validateImage } from "@/utils/imageUpload";
@@ -2394,7 +2398,31 @@ const ContentManager = ({
                         <Instagram className="h-5 w-5 text-amber-600 dark:text-gold" />
                       )}
                       {link.platform.toLowerCase() === "twitter" && (
-                        <Twitter className="h-5 w-5 text-amber-600 dark:text-gold" />
+                        <X className="h-5 w-5 text-amber-600 dark:text-gold" />
+                      )}
+                      {link.platform.toLowerCase() === "linkedin" && (
+                        <Linkedin className="h-5 w-5 text-amber-600 dark:text-gold" />
+                      )}
+                      {link.platform.toLowerCase() === "youtube" && (
+                        <Youtube className="h-5 w-5 text-amber-600 dark:text-gold" />
+                      )}
+                      {link.platform.toLowerCase() === "google business" && (
+                        <Building2 className="h-5 w-5 text-amber-600 dark:text-gold" />
+                      )}
+                      {link.platform.toLowerCase() === "pinterest" && (
+                        <ExternalLink className="h-5 w-5 text-amber-600 dark:text-gold" />
+                      )}
+                      {link.platform.toLowerCase() === "tiktok" && (
+                        <ExternalLink className="h-5 w-5 text-amber-600 dark:text-gold" />
+                      )}
+                      {link.platform.toLowerCase() === "snapchat" && (
+                        <ExternalLink className="h-5 w-5 text-amber-600 dark:text-gold" />
+                      )}
+                      {link.platform.toLowerCase() === "twitch" && (
+                        <ExternalLink className="h-5 w-5 text-amber-600 dark:text-gold" />
+                      )}
+                      {link.platform.toLowerCase() === "website" && (
+                        <Globe className="h-5 w-5 text-amber-600 dark:text-gold" />
                       )}
                       {link.platform.toLowerCase() === "linkedin" && (
                         <Linkedin className="h-5 w-5 text-amber-600 dark:text-gold" />
@@ -2408,6 +2436,12 @@ const ContentManager = ({
                         "twitter",
                         "linkedin",
                         "youtube",
+                        "google business",
+                        "pinterest",
+                        "tiktok",
+                        "snapchat",
+                        "twitch",
+                        "website",
                       ].includes(link.platform.toLowerCase()) && (
                         <ExternalLink className="h-5 w-5 text-amber-600 dark:text-gold" />
                       )}
@@ -2647,15 +2681,20 @@ const ContentManager = ({
                     <SelectContent className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
                       <SelectItem value="Facebook">Facebook</SelectItem>
                       <SelectItem value="Instagram">Instagram</SelectItem>
-                      <SelectItem value="Twitter">Twitter</SelectItem>
+                      <SelectItem value="Twitter">Twitter (X)</SelectItem>
                       <SelectItem value="LinkedIn">LinkedIn</SelectItem>
                       <SelectItem value="YouTube">YouTube</SelectItem>
+                      <SelectItem value="Google Business">
+                        Google Business
+                      </SelectItem>
                       <SelectItem value="TikTok">TikTok</SelectItem>
                       <SelectItem value="Pinterest">Pinterest</SelectItem>
                       <SelectItem value="Snapchat">Snapchat</SelectItem>
+                      <SelectItem value="Twitch">Twitch</SelectItem>
                       <SelectItem value="WhatsApp">WhatsApp</SelectItem>
                       <SelectItem value="Telegram">Telegram</SelectItem>
                       <SelectItem value="Discord">Discord</SelectItem>
+                      <SelectItem value="Website">Website</SelectItem>
                       <SelectItem value="Other">Other</SelectItem>
                     </SelectContent>
                   </Select>
@@ -2690,7 +2729,32 @@ const ContentManager = ({
                         <Instagram className="h-4 w-4 text-amber-600 dark:text-gold" />
                       )}
                       {newSocialLink.platform.toLowerCase() === "twitter" && (
-                        <Twitter className="h-4 w-4 text-amber-600 dark:text-gold" />
+                        <X className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                      {newSocialLink.platform.toLowerCase() === "linkedin" && (
+                        <Linkedin className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                      {newSocialLink.platform.toLowerCase() === "youtube" && (
+                        <Youtube className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                      {newSocialLink.platform.toLowerCase() ===
+                        "google business" && (
+                        <Building2 className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                      {newSocialLink.platform.toLowerCase() === "pinterest" && (
+                        <ExternalLink className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                      {newSocialLink.platform.toLowerCase() === "tiktok" && (
+                        <ExternalLink className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                      {newSocialLink.platform.toLowerCase() === "snapchat" && (
+                        <ExternalLink className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                      {newSocialLink.platform.toLowerCase() === "twitch" && (
+                        <ExternalLink className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                      {newSocialLink.platform.toLowerCase() === "website" && (
+                        <Globe className="h-4 w-4 text-amber-600 dark:text-gold" />
                       )}
                       {newSocialLink.platform.toLowerCase() === "linkedin" && (
                         <Linkedin className="h-4 w-4 text-amber-600 dark:text-gold" />
@@ -2704,6 +2768,12 @@ const ContentManager = ({
                         "twitter",
                         "linkedin",
                         "youtube",
+                        "google business",
+                        "pinterest",
+                        "tiktok",
+                        "snapchat",
+                        "twitch",
+                        "website",
                       ].includes(newSocialLink.platform.toLowerCase()) && (
                         <ExternalLink className="h-4 w-4 text-amber-600 dark:text-gold" />
                       )}

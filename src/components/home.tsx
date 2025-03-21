@@ -8,6 +8,7 @@ import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
 import { useContent } from "@/context/ContentContext";
 import YouTubeHeroDemo from "@/tempobook/storyboards/15d92a90-f680-4787-9d7a-23419d9e3195";
+// Remove tawk.to integration that's causing errors
 
 const Home = () => {
   // Get content from context

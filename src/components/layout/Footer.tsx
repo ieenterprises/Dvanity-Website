@@ -2,13 +2,15 @@ import React from "react";
 import {
   Facebook,
   Instagram,
-  Twitter,
   Mail,
   Phone,
   MapPin,
   Linkedin,
   Youtube,
   ExternalLink,
+  Building2,
+  X,
+  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -115,7 +117,26 @@ const Footer = ({
                       <Instagram size={18} />
                     )}
                     {link.platform.toLowerCase() === "twitter" && (
-                      <Twitter size={18} />
+                      <X size={18} />
+                    )}
+                    {(link.platform.toLowerCase() === "google business" ||
+                      link.platform.toLowerCase() === "google") && (
+                      <Building2 size={18} />
+                    )}
+                    {link.platform.toLowerCase() === "pinterest" && (
+                      <ExternalLink size={18} />
+                    )}
+                    {link.platform.toLowerCase() === "tiktok" && (
+                      <ExternalLink size={18} />
+                    )}
+                    {link.platform.toLowerCase() === "snapchat" && (
+                      <ExternalLink size={18} />
+                    )}
+                    {link.platform.toLowerCase() === "twitch" && (
+                      <ExternalLink size={18} />
+                    )}
+                    {link.platform.toLowerCase() === "website" && (
+                      <Globe size={18} />
                     )}
                     {link.platform.toLowerCase() === "linkedin" && (
                       <Linkedin size={18} />
@@ -129,6 +150,13 @@ const Footer = ({
                       "twitter",
                       "linkedin",
                       "youtube",
+                      "google business",
+                      "google",
+                      "pinterest",
+                      "tiktok",
+                      "snapchat",
+                      "twitch",
+                      "website",
                     ].includes(link.platform.toLowerCase()) && (
                       <ExternalLink size={18} />
                     )}
@@ -167,7 +195,7 @@ const Footer = ({
                       theme === "dark" ? "bg-black" : "bg-amber-50",
                     )}
                   >
-                    <Twitter size={18} />
+                    <X size={18} />
                   </a>
                 </>
               )}
