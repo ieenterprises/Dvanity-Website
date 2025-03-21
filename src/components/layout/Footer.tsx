@@ -53,7 +53,7 @@ const Footer = ({
   const newsletterEnabled = footerContent?.newsletterEnabled !== false;
   const copyrightText =
     footerContent?.copyrightText ||
-    `&copy; ${new Date().getFullYear()} D'Vanity Night Club. All rights reserved.`;
+    `&copy; ${new Date().getFullYear()} D'Vanity Premium Club. All rights reserved, Powered by ieEnterprises`;
 
   return (
     <footer
