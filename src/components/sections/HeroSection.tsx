@@ -26,22 +26,48 @@ const HeroSection = ({
     );
   }, [videoSrc]);
 
-  // Extract YouTube embed URL from iframe string if needed
+  // Extract YouTube embed URL from iframe string if needed and ensure autoplay parameters
   const getYouTubeEmbedUrl = useMemo(() => {
     if (!videoSrc || typeof videoSrc !== "string") return null;
 
-    // If it's already a direct embed URL, return it
-    if (videoSrc.startsWith("https://www.youtube.com/embed/")) {
-      return videoSrc;
-    }
+    let url = videoSrc;
 
     // If it's an iframe string, extract the src attribute
-    if (videoSrc.includes("<iframe") && videoSrc.includes('src="')) {
-      const srcMatch = videoSrc.match(/src=\"([^\"]+)\"/i);
-      return srcMatch ? srcMatch[1] : null;
+    if (url.includes("<iframe") && url.includes('src="')) {
+      const srcMatch = url.match(/src=\"([^\"]+)\"/i);
+      url = srcMatch ? srcMatch[1] : null;
+      if (!url) return null;
     }
 
-    return null;
+    // Ensure the URL has necessary parameters for autoplay and looping
+    if (url.includes("youtube.com/embed/")) {
+      // Parse the URL to separate the base and parameters
+      const [baseUrl, existingParams] = url.split("?");
+      const params = new URLSearchParams(existingParams || "");
+
+      // Set required parameters if they don't exist
+      if (!params.has("autoplay")) params.set("autoplay", "1");
+      if (!params.has("mute")) params.set("mute", "1");
+      if (!params.has("loop")) params.set("loop", "1");
+
+      // For looping to work, we need the playlist parameter with the video ID
+      if (!params.has("playlist")) {
+        const videoId = baseUrl.split("/").pop();
+        if (videoId) params.set("playlist", videoId);
+      }
+
+      // Additional parameters for better experience
+      if (!params.has("controls")) params.set("controls", "0");
+      if (!params.has("showinfo")) params.set("showinfo", "0");
+      if (!params.has("rel")) params.set("rel", "0");
+
+      // Add a timestamp to prevent caching issues
+      params.set("_t", new Date().getTime().toString());
+
+      return `${baseUrl}?${params.toString()}`;
+    }
+
+    return url;
   }, [videoSrc]);
 
   return (
@@ -57,6 +83,7 @@ const HeroSection = ({
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
+              key={getYouTubeEmbedUrl} // Force re-render when URL changes
             ></iframe>
           </div>
         ) : videoSrc ? (
@@ -103,12 +130,15 @@ const HeroSection = ({
             <Button
               variant="ghost"
               className="flex items-center space-x-2 text-amber-400"
-              onClick={() =>
+              onClick={() => {
+                // Extract video ID from the embed URL
+                const videoIdMatch = videoSrc.match(/\/embed\/([^?]+)/);
+                const videoId = videoIdMatch ? videoIdMatch[1] : "UzswywOA1qU";
                 window.open(
-                  "https://www.youtube.com/watch?v=UzswywOA1qU",
+                  `https://www.youtube.com/watch?v=${videoId}`,
                   "_blank",
-                )
-              }
+                );
+              }}
             >
               <Play className="h-5 w-5" />
               <span>Watch Teaser</span>

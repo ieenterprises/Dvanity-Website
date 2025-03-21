@@ -756,6 +756,29 @@ const ContentManager = ({
                   </label>
                 </div>
               </div>
+              <div className="mt-4">
+                <label className="block text-sm font-medium mb-1">
+                  YouTube Embed URL
+                </label>
+                <div className="space-y-2">
+                  <Input
+                    value={heroContent.youtubeEmbed || ""}
+                    onChange={(e) =>
+                      setHeroContent({
+                        ...heroContent,
+                        youtubeEmbed: e.target.value,
+                      })
+                    }
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                    placeholder="https://www.youtube.com/embed/VIDEO_ID?autoplay=1&mute=1&loop=1&playlist=VIDEO_ID&controls=0"
+                  />
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                    Enter a YouTube embed URL. This will be used for the hero
+                    section background. Format:
+                    https://www.youtube.com/embed/VIDEO_ID with parameters.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </TabsContent>
@@ -2776,6 +2799,23 @@ const ContentManager = ({
                         <p className="text-sm text-gray-600 dark:text-gray-400">
                           Video URL: {heroContent.videoUrl}
                         </p>
+                      </div>
+                    )}
+                    {heroContent.youtubeEmbed && (
+                      <div className="mt-4 bg-gray-50 dark:bg-gray-900 p-2 rounded">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          YouTube Embed: {heroContent.youtubeEmbed}
+                        </p>
+                        <div className="mt-2 h-40 w-full">
+                          <iframe
+                            src={heroContent.youtubeEmbed}
+                            className="w-full h-full"
+                            title="YouTube video preview"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          ></iframe>
+                        </div>
                       </div>
                     )}
                   </div>

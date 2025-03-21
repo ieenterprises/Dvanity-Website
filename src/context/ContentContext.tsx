@@ -6,6 +6,7 @@ type HeroContent = {
   title: string;
   subtitle: string;
   videoUrl: string;
+  youtubeEmbed: string;
 };
 
 type EventCategory = {
@@ -160,6 +161,8 @@ const initialContent: ContentState = {
     title: "Dvanity Night Club",
     subtitle: "Experience Luxury Nightlife",
     videoUrl: "https://example.com/video.mp4",
+    youtubeEmbed:
+      "https://www.youtube.com/embed/UzswywOA1qU?si=xHvwDqoyHS5ZCfhD&autoplay=1&mute=1&loop=1&playlist=UzswywOA1qU&controls=0&showinfo=0&rel=0",
   },
   eventCategories: [
     {
