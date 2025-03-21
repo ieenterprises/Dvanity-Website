@@ -18,6 +18,7 @@ interface ContactSectionProps {
       days: string;
       time: string;
     }[];
+    mapEmbed?: string;
   };
 }
 
@@ -34,22 +35,29 @@ const ContactSection = ({
   },
 }: ContactSectionProps) => {
   useEffect(() => {
-    // Using direct embed code approach instead of dynamic script loading
-    // This avoids issues with the Tawk API initialization
-    const tawkToContainer = document.createElement("div");
-    tawkToContainer.id = "tawk-to-container";
-    document.body.appendChild(tawkToContainer);
+    // Initialize Tawk.to chat widget
+    window.Tawk_API = window.Tawk_API || {};
+    window.Tawk_LoadStart = new Date();
 
-    // Add a message about chat availability
-    const chatMessage = document.createElement("div");
-    chatMessage.innerHTML =
-      '<p style="padding: 10px; background-color: #f8f9fa; border-radius: 4px; text-align: center;">Live chat is available during business hours</p>';
-    tawkToContainer.appendChild(chatMessage);
+    const s1 = document.createElement("script");
+    const s0 = document.getElementsByTagName("script")[0];
+
+    s1.async = true;
+    s1.src = "https://embed.tawk.to/67dd45e522662b190d7b8c8c/1ims5i2gb";
+    s1.charset = "UTF-8";
+    s1.setAttribute("crossorigin", "*");
+
+    if (s0 && s0.parentNode) {
+      s0.parentNode.insertBefore(s1, s0);
+    } else if (document.head) {
+      document.head.appendChild(s1);
+    }
 
     // Cleanup function
     return () => {
-      if (tawkToContainer && document.body.contains(tawkToContainer)) {
-        document.body.removeChild(tawkToContainer);
+      // Remove the script if component unmounts
+      if (s1 && s1.parentNode) {
+        s1.parentNode.removeChild(s1);
       }
     };
   }, []);
@@ -112,23 +120,26 @@ const ContactSection = ({
                 <Clock className="h-6 w-6 text-amber-600 dark:text-yellow-500 mr-4 mt-1 flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-lg">Hours</h4>
-                  <div className="text-gray-700 dark:text-gray-300">
-                    {contactInfo.hours.map((item, index) => (
-                      <div key={index} className="flex justify-between mb-1">
-                        <span>{item.days}</span>
-                        <span>{item.time}</span>
-                      </div>
-                    ))}
+                  <div className="text-gray-700 dark:text-gray-300 mb-4">
+                    <div className="flex justify-between mb-1">
+                      <span>Thursday - Sunday</span>
+                      <span>10PM - 4AM</span>
+                    </div>
+                  </div>
+
+                  {/* Google Maps Embed */}
+                  <div className="mt-4 h-64 w-full rounded-lg overflow-hidden">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3975.5259108695736!2d6.9824023100838835!3d4.851136840315694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1069cffe76437983%3A0x37593fa830d66a52!2sD'Vanity%20Premium%20Club!5e0!3m2!1sen!2sng!4v1742579318332!5m2!1sen!2sng"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            {/* Map Placeholder */}
-            <div className="mt-8 h-64 bg-gray-200 dark:bg-gray-800 rounded-lg overflow-hidden">
-              <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-800 text-gray-500">
-                <p>Interactive Map Coming Soon</p>
-                {/* In a real implementation, you would embed a Google Maps or similar here */}
               </div>
             </div>
           </div>

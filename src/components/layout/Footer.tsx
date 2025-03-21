@@ -39,12 +39,13 @@ interface FooterProps {
 const Footer = ({
   logo = "/logo.png",
   socialLinks = {
-    facebook: "https://facebook.com/dvanity",
-    instagram: "https://instagram.com/dvanity",
-    twitter: "https://twitter.com/dvanity",
-    linkedin: "https://linkedin.com/company/dvanity",
-    googleBusiness: "https://business.google.com/dvanity",
-    tiktok: "https://tiktok.com/@dvanity",
+    facebook: "https://web.facebook.com/DVanityPremiumClub/",
+    instagram: "https://www.instagram.com/dvanity_premiumclub/",
+    twitter: "https://x.com/DVanityPremClub",
+    linkedin: "https://www.linkedin.com/in/d-vanity-premium-club-077275357",
+    googleBusiness: "https://g.co/kgs/yQUJ3vP",
+    tiktok:
+      "https://www.tiktok.com/@dvanity_premiumclub?is_from_webapp=1&sender_device=pc",
   },
   contactInfo = {
     email: "info@dvanity.com",

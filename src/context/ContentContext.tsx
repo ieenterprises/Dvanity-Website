@@ -59,6 +59,7 @@ type ContactContent = {
   email: string;
   hours: string;
   mapUrl: string;
+  mapEmbed?: string;
 };
 
 type BottleServicePackage = {
@@ -276,11 +277,13 @@ const initialContent: ContentState = {
     ],
   },
   contact: {
-    address: "123 Nightlife Ave, Los Angeles, CA 90001",
+    address: "no. 53 Kpakani Street Port Harcourt",
     phone: "+1 (555) 123-4567",
     email: "info@dvanity.com",
     hours: "Thursday - Sunday: 10PM - 4AM",
     mapUrl: "https://maps.example.com/dvanity",
+    mapEmbed:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3975.5508083469196!2d6.9807909999999995!3d4.8511082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1069cf173bcc1951%3A0xda2ab1cc8bab4e45!2sG-throne%20Hotel%20and%20Suites!5e0!3m2!1sen!2sng!4v1716294000000!5m2!1sen!2sng",
   },
   bottleService: [
     {
@@ -324,18 +327,26 @@ const initialContent: ContentState = {
   },
   footer: {
     socialLinks: [
-      { id: "1", platform: "Facebook", url: "https://facebook.com/dvanity" },
-      { id: "2", platform: "Instagram", url: "https://instagram.com/dvanity" },
-      { id: "3", platform: "Twitter", url: "https://twitter.com/dvanity" },
+      {
+        id: "1",
+        platform: "Facebook",
+        url: "https://web.facebook.com/DVanityPremiumClub/",
+      },
+      {
+        id: "2",
+        platform: "Instagram",
+        url: "https://www.instagram.com/dvanity_premiumclub/",
+      },
+      { id: "3", platform: "Twitter", url: "https://x.com/DVanityPremClub" },
       {
         id: "4",
         platform: "LinkedIn",
-        url: "https://linkedin.com/company/dvanity",
+        url: "https://www.linkedin.com/in/d-vanity-premium-club-077275357",
       },
       {
         id: "5",
         platform: "Google Business",
-        url: "https://business.google.com/dvanity",
+        url: "https://g.co/kgs/yQUJ3vP",
       },
     ],
     quickLinks: [

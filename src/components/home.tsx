@@ -43,6 +43,7 @@ const Home = () => {
               time: content.contact.hours.split(":")[1] || "10:00 PM - 3:00 AM",
             },
           ],
+          mapUrl: content.contact.mapUrl,
         }}
       />
 
