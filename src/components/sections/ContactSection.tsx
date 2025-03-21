@@ -34,37 +34,51 @@ const ContactSection = ({
   },
 }: ContactSectionProps) => {
   useEffect(() => {
-    // Define Tawk_API and Tawk_LoadStart before adding the script
-    var Tawk_API = window.Tawk_API || {};
-    var Tawk_LoadStart = new Date();
-    window.Tawk_API = Tawk_API;
-    window.Tawk_LoadStart = Tawk_LoadStart;
+    // Safer implementation of Tawk.to chat
+    const loadTawkTo = () => {
+      try {
+        // Define Tawk_API and Tawk_LoadStart before adding the script
+        window.Tawk_API = window.Tawk_API || {};
+        window.Tawk_LoadStart = new Date();
 
-    // Add Tawk.to script using the exact implementation from the snippet
-    const s1 = document.createElement("script");
-    const s0 = document.getElementsByTagName("script")[0];
-    s1.async = true;
-    s1.src = "https://embed.tawk.to/67dd45e522662b190d7b8c8c/1ims5i2gb";
-    s1.charset = "UTF-8";
-    s1.setAttribute("crossorigin", "*");
-    if (s0 && s0.parentNode) {
-      s0.parentNode.insertBefore(s1, s0);
-    } else if (document.body) {
-      document.body.appendChild(s1);
-    }
+        // Create and add the script
+        const s1 = document.createElement("script");
+        const s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = "https://embed.tawk.to/67dd45e522662b190d7b8c8c/1ims5i2gb";
+        s1.charset = "UTF-8";
+        s1.setAttribute("crossorigin", "*");
+
+        if (s0 && s0.parentNode) {
+          s0.parentNode.insertBefore(s1, s0);
+        } else if (document.body) {
+          document.body.appendChild(s1);
+        }
+      } catch (error) {
+        console.error("Error loading Tawk.to chat widget:", error);
+      }
+    };
+
+    // Delay loading the chat widget to ensure the DOM is fully loaded
+    const timer = setTimeout(loadTawkTo, 1000);
 
     // Cleanup function
     return () => {
-      // Remove the script when component unmounts
-      const tawkScript = document.querySelector(
-        'script[src="https://embed.tawk.to/67dd45e522662b190d7b8c8c/1ims5i2gb"]',
-      );
-      if (tawkScript && tawkScript.parentNode) {
-        tawkScript.parentNode.removeChild(tawkScript);
+      clearTimeout(timer);
+      try {
+        // Remove the script when component unmounts
+        const tawkScript = document.querySelector(
+          'script[src="https://embed.tawk.to/67dd45e522662b190d7b8c8c/1ims5i2gb"]',
+        );
+        if (tawkScript && tawkScript.parentNode) {
+          tawkScript.parentNode.removeChild(tawkScript);
+        }
+        // Clean up global variables
+        if (window.Tawk_API) delete window.Tawk_API;
+        if (window.Tawk_LoadStart) delete window.Tawk_LoadStart;
+      } catch (error) {
+        console.error("Error cleaning up Tawk.to chat widget:", error);
       }
-      // Clean up global variables
-      delete window.Tawk_API;
-      delete window.Tawk_LoadStart;
     };
   }, []);
 
