@@ -53,7 +53,7 @@ const Footer = ({
   const newsletterEnabled = footerContent?.newsletterEnabled !== false;
   const copyrightText =
     footerContent?.copyrightText ||
-    `&copy; ${new Date().getFullYear()} Dvanity Night Club. All rights reserved.`;
+    `&copy; ${new Date().getFullYear()} D'Vanity Night Club. All rights reserved.`;
 
   return (
     <footer
@@ -75,15 +75,14 @@ const Footer = ({
                 />
               ) : (
                 <>
-                  <div
-                    className={cn(
-                      "w-12 h-12 border border-amber-500 flex items-center justify-center rounded-full mr-3",
-                      theme === "dark" ? "bg-black" : "bg-amber-50",
-                    )}
-                  >
-                    <span className="text-amber-500 font-bold text-xl">D</span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-amber-500">DVANITY</h3>
+                  <img
+                    src="/logo.ico"
+                    alt="D'Vanity"
+                    className="h-12 w-auto object-contain mr-3"
+                  />
+                  <h3 className="text-2xl font-bold text-amber-500">
+                    D'VANITY
+                  </h3>
                 </>
               )}
             </div>
@@ -93,7 +92,7 @@ const Footer = ({
                 theme === "dark" ? "text-gray-400" : "text-gray-600",
               )}
             >
-              Experience the ultimate nightlife at Dvanity. Luxury, excitement,
+              Experience the ultimate nightlife at D'Vanity. Luxury, excitement,
               and unforgettable memories await you.
             </p>
             <div className="flex space-x-4">

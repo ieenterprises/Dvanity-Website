@@ -100,6 +100,41 @@ export type Database = {
           },
         ]
       }
+      reservations: {
+        Row: {
+          business_id: string | null
+          created_at: string | null
+          form_data: Json
+          id: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          business_id?: string | null
+          created_at?: string | null
+          form_data: Json
+          id?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          business_id?: string | null
+          created_at?: string | null
+          form_data?: Json
+          id?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

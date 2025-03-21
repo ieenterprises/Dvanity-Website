@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -122,55 +121,31 @@ const EventsSection: React.FC<EventsSectionProps> = ({
         </div>
 
         {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-10">
-          <Button
-            variant={activeTab === "all" ? "default" : "outline"}
+        <div className="flex justify-center gap-2 mb-8">
+          <button
             onClick={() => setActiveTab("all")}
-            className={cn(
-              "border-amber-600 dark:border-gold",
-              activeTab === "all"
-                ? "bg-amber-600 dark:bg-gold text-white dark:text-black"
-                : "text-amber-600 dark:text-gold bg-amber-600/10 dark:bg-gold/10",
-            )}
+            className={`px-4 py-2 rounded-md ${activeTab === "all" ? "bg-amber-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
           >
             All Events
-          </Button>
-          <Button
-            variant={activeTab === "music" ? "default" : "outline"}
+          </button>
+          <button
             onClick={() => setActiveTab("music")}
-            className={cn(
-              "border-amber-600 dark:border-gold",
-              activeTab === "music"
-                ? "bg-amber-600 dark:bg-gold text-white dark:text-black"
-                : "text-amber-600 dark:text-gold bg-amber-600/10 dark:bg-gold/10",
-            )}
+            className={`px-4 py-2 rounded-md ${activeTab === "music" ? "bg-amber-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
           >
             Music
-          </Button>
-          <Button
-            variant={activeTab === "vip" ? "default" : "outline"}
+          </button>
+          <button
             onClick={() => setActiveTab("vip")}
-            className={cn(
-              "border-amber-600 dark:border-gold",
-              activeTab === "vip"
-                ? "bg-amber-600 dark:bg-gold text-white dark:text-black"
-                : "text-amber-600 dark:text-gold bg-amber-600/10 dark:bg-gold/10",
-            )}
+            className={`px-4 py-2 rounded-md ${activeTab === "vip" ? "bg-amber-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
           >
             VIP
-          </Button>
-          <Button
-            variant={activeTab === "special" ? "default" : "outline"}
+          </button>
+          <button
             onClick={() => setActiveTab("special")}
-            className={cn(
-              "border-amber-600 dark:border-gold",
-              activeTab === "special"
-                ? "bg-amber-600 dark:bg-gold text-white dark:text-black"
-                : "text-amber-600 dark:text-gold bg-amber-600/10 dark:bg-gold/10",
-            )}
+            className={`px-4 py-2 rounded-md ${activeTab === "special" ? "bg-amber-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
           >
             Special
-          </Button>
+          </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

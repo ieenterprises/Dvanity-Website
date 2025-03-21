@@ -1,27 +1,5 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { MapPin, Phone, Clock, Mail, Send } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-
-interface ContactFormValues {
-  name: string;
-  email: string;
-  phone: string;
-  date: string;
-  guests: string;
-  message: string;
-}
+import React, { useEffect } from "react";
+import { MapPin, Phone, Clock, Mail, MessageSquare } from "lucide-react";
 
 interface ContactSectionProps {
   contactInfo?: {
@@ -47,25 +25,31 @@ const ContactSection = ({
     ],
   },
 }: ContactSectionProps) => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const form = useForm<ContactFormValues>({
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      date: "",
-      guests: "",
-      message: "",
-    },
-  });
+  useEffect(() => {
+    // Add Tawk.to script
+    const s1 = document.createElement("script");
+    const s0 = document.getElementsByTagName("script")[0];
+    s1.async = true;
+    s1.src = "https://embed.tawk.to/67dd45e522662b190d7b8c8c/1ims5i2gb";
+    s1.charset = "UTF-8";
+    s1.setAttribute("crossorigin", "*");
+    if (s0 && s0.parentNode) {
+      s0.parentNode.insertBefore(s1, s0);
+    } else if (document.body) {
+      document.body.appendChild(s1);
+    }
 
-  const onSubmit = (data: ContactFormValues) => {
-    console.log("Form submitted:", data);
-    // Here you would typically send the data to your backend
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 5000);
-    form.reset();
-  };
+    // Cleanup function
+    return () => {
+      // Remove the script when component unmounts
+      const tawkScript = document.querySelector(
+        'script[src="https://embed.tawk.to/67dd45e522662b190d7b8c8c/1ims5i2gb"]',
+      );
+      if (tawkScript && tawkScript.parentNode) {
+        tawkScript.parentNode.removeChild(tawkScript);
+      }
+    };
+  }, []);
 
   return (
     <section
@@ -75,11 +59,11 @@ const ContactSection = ({
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-amber-600 dark:text-gold-500 bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-amber-700 dark:from-yellow-400 dark:to-yellow-600">
-            Contact & Reservations
+            Contact Us
           </h2>
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
-            Reserve your table, bottle service, or inquire about private events
-            at Dvanity Night Club.
+            Get in touch with us about bottle service, private events, or any
+            questions about Dvanity Night Club.
           </p>
         </div>
 
@@ -146,163 +130,35 @@ const ContactSection = ({
             </div>
           </div>
 
-          {/* Contact Form */}
+          {/* Live Chat Information */}
           <div className="bg-gray-100 dark:bg-gray-900 p-8 rounded-lg border border-amber-600/30 dark:border-yellow-600/30 shadow-lg shadow-amber-600/10 dark:shadow-yellow-600/10">
             <h3 className="text-2xl font-bold mb-6 text-amber-600 dark:text-yellow-500">
-              Make a Reservation
+              Live Chat Support
             </h3>
 
-            {isSubmitted ? (
-              <div className="bg-green-100/30 dark:bg-green-900/30 border border-green-500 text-green-700 dark:text-green-300 p-4 rounded-md mb-6">
-                <p className="font-medium">
-                  Thank you for your reservation request!
+            <div className="flex items-start mb-6">
+              <MessageSquare className="h-6 w-6 text-amber-600 dark:text-yellow-500 mr-4 mt-1 flex-shrink-0" />
+              <div>
+                <h4 className="font-semibold text-lg">Chat With Us</h4>
+                <p className="text-gray-700 dark:text-gray-300 mb-4">
+                  Our team is available to assist you with reservations, bottle
+                  service, private events, or any questions you might have about
+                  Dvanity Night Club.
                 </p>
-                <p className="text-sm mt-1">
-                  Our team will contact you shortly to confirm your reservation.
+                <p className="text-gray-700 dark:text-gray-300">
+                  Use the chat widget in the corner of your screen to start a
+                  conversation with our team.
                 </p>
               </div>
-            ) : null}
+            </div>
 
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6"
-              >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-black dark:text-white">
-                          Full Name
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="John Doe"
-                            className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-black dark:text-white">
-                          Email
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="email"
-                            placeholder="you@example.com"
-                            className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-black dark:text-white">
-                          Phone Number
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="(555) 123-4567"
-                            className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="date"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-black dark:text-white">
-                          Preferred Date
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="date"
-                            className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <FormField
-                  control={form.control}
-                  name="guests"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-black dark:text-white">
-                        Number of Guests
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="4"
-                          className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-black dark:text-white">
-                        Special Requests
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Tell us about any special requests or questions..."
-                          className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white min-h-[120px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-amber-500 to-amber-600 dark:from-yellow-500 dark:to-yellow-600 text-white dark:text-black font-bold py-3 rounded-md flex items-center justify-center"
-                >
-                  <Send className="mr-2 h-5 w-5" />
-                  Submit Reservation Request
-                </Button>
-              </form>
-            </Form>
+            <div className="bg-amber-100 dark:bg-amber-900/30 border border-amber-500 text-amber-700 dark:text-amber-300 p-4 rounded-md">
+              <p className="font-medium">Looking for immediate assistance?</p>
+              <p className="text-sm mt-1">
+                Our live chat representatives are available during business
+                hours to help with your inquiries.
+              </p>
+            </div>
           </div>
         </div>
       </div>

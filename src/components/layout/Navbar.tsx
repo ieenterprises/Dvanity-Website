@@ -70,9 +70,11 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
                 className="h-10 w-auto object-contain"
               />
             ) : (
-              <span className="text-2xl font-bold text-gold-500 bg-gradient-to-r from-amber-500 to-yellow-700 dark:from-amber-400 dark:to-yellow-600 bg-clip-text text-transparent">
-                DVANITY
-              </span>
+              <img
+                src="/logo.ico"
+                alt="D'Vanity"
+                className="h-10 w-auto object-contain"
+              />
             )}
           </Link>
 

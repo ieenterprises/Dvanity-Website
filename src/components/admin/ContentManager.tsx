@@ -2156,7 +2156,7 @@ const ContentManager = ({
                   </label>
                   <div className="flex items-center space-x-4">
                     <Input
-                      value={navbarContent?.logo || ""}
+                      value={navbarContent?.logo || "/logo.ico"}
                       onChange={(e) =>
                         setNavbarContent({
                           ...navbarContent,
@@ -2474,7 +2474,7 @@ const ContentManager = ({
                   </label>
                   <div className="flex items-center space-x-4">
                     <Input
-                      value={footerContent?.logo || ""}
+                      value={footerContent?.logo || "/logo.ico"}
                       onChange={(e) =>
                         setFooterContent({
                           ...footerContent,
@@ -2558,7 +2558,7 @@ const ContentManager = ({
                       })
                     }
                     className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
-                    placeholder="© 2023 Dvanity Night Club. All rights reserved."
+                    placeholder="© 2023 D'Vanity Night Club. All rights reserved."
                   />
                   <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                     Use {new Date().getFullYear()} for the current year
