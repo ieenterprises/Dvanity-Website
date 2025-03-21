@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -16,6 +17,7 @@ import {
   CardContent,
   CardFooter,
 } from "../ui/card";
+import { useAuth } from "@/context/AuthContext";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -31,14 +33,19 @@ interface LoginFormProps {
   onSubmit?: (values: LoginFormValues) => void;
   isLoading?: boolean;
   error?: string;
+  businessLogo?: string;
+  businessName?: string;
 }
 
 const LoginForm = ({
   onSubmit = () => {},
   isLoading = false,
   error = "",
+  businessLogo = "",
+  businessName = "Admin Portal",
 }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
+  const { profile } = useAuth();
 
   const {
     register,
@@ -61,16 +68,24 @@ const LoginForm = ({
     <Card className="w-full max-w-md mx-auto bg-black border-gold border-2">
       <CardHeader className="space-y-2">
         <div className="flex justify-center mb-4">
-          <img
-            src="/logo-placeholder.png"
-            alt="Dvanity Logo"
-            className="h-16 w-auto"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src =
-                "https://api.dicebear.com/7.x/initials/svg?seed=DV&backgroundColor=gold&textColor=black";
-            }}
-          />
+          {businessLogo ? (
+            <img
+              src={businessLogo}
+              alt={`${businessName} Logo`}
+              className="h-16 w-auto object-contain"
+            />
+          ) : (
+            <img
+              src="/logo.ico"
+              alt="Business Logo"
+              className="h-16 w-auto object-contain"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src =
+                  "https://api.dicebear.com/7.x/initials/svg?seed=DV&backgroundColor=gold&textColor=black";
+              }}
+            />
+          )}
         </div>
         <CardTitle className="text-2xl font-bold text-center text-gold">
           Admin Login
@@ -97,7 +112,7 @@ const LoginForm = ({
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@dvanity.com"
+                placeholder="admin@yourbusiness.com"
                 className="pl-10 bg-gray-900 border-gray-700 text-white focus:border-gold focus:ring-gold"
                 {...register("email")}
               />
@@ -172,9 +187,15 @@ const LoginForm = ({
           </Button>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-center border-t border-gray-800 pt-4">
+      <CardFooter className="flex flex-col space-y-4 border-t border-gray-800 pt-4">
+        <p className="text-sm text-gray-500">
+          Don't have an account?{" "}
+          <Link to="/admin/signup" className="text-gold hover:underline">
+            Sign up
+          </Link>
+        </p>
         <p className="text-xs text-gray-500">
-          Dvanity Night Club Admin Portal © {new Date().getFullYear()}
+          {businessName} © {new Date().getFullYear()}
         </p>
       </CardFooter>
     </Card>

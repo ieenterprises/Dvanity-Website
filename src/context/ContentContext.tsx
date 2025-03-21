@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 
 // Define types for our content sections
 type HeroContent = {
   title: string;
   subtitle: string;
   videoUrl: string;
+  youtubeEmbed: string;
 };
 
 type EventCategory = {
@@ -44,7 +46,10 @@ type TeamMember = {
 
 type AboutContent = {
   title: string;
+  subtitle?: string;
   description: string;
+  history?: string;
+  mission?: string;
   teamMembers: TeamMember[];
 };
 
@@ -54,6 +59,7 @@ type ContactContent = {
   email: string;
   hours: string;
   mapUrl: string;
+  mapEmbed?: string;
 };
 
 type BottleServicePackage = {
@@ -62,6 +68,38 @@ type BottleServicePackage = {
   price: string;
   description: string;
   image: string;
+};
+
+type NavLink = {
+  id: string;
+  name: string;
+  path: string;
+};
+
+type NavbarContent = {
+  links: NavLink[];
+  adminButtonText: string;
+  logo?: string;
+};
+
+type SocialLink = {
+  id: string;
+  platform: string;
+  url: string;
+};
+
+type QuickLink = {
+  id: string;
+  name: string;
+  path: string;
+};
+
+type FooterContent = {
+  socialLinks: SocialLink[];
+  quickLinks: QuickLink[];
+  newsletterEnabled: boolean;
+  copyrightText: string;
+  logo?: string;
 };
 
 type ContentState = {
@@ -73,6 +111,8 @@ type ContentState = {
   about: AboutContent;
   contact: ContactContent;
   bottleService: BottleServicePackage[];
+  navbar: NavbarContent;
+  footer: FooterContent;
 };
 
 type ContentContextType = {
@@ -106,6 +146,17 @@ type ContentContextType = {
   addBottlePackage: (pkg: BottleServicePackage) => void;
   updateBottlePackage: (id: string, pkg: Partial<BottleServicePackage>) => void;
   deleteBottlePackage: (id: string) => void;
+  updateNavbar: (data: NavbarContent) => void;
+  addNavLink: (link: NavLink) => void;
+  updateNavLink: (id: string, link: Partial<NavLink>) => void;
+  deleteNavLink: (id: string) => void;
+  updateFooter: (data: FooterContent) => void;
+  addSocialLink: (link: SocialLink) => void;
+  updateSocialLink: (id: string, link: Partial<SocialLink>) => void;
+  deleteSocialLink: (id: string) => void;
+  addQuickLink: (link: QuickLink) => void;
+  updateQuickLink: (id: string, link: Partial<QuickLink>) => void;
+  deleteQuickLink: (id: string) => void;
 };
 
 // Initial state with default values
@@ -114,6 +165,8 @@ const initialContent: ContentState = {
     title: "Dvanity Night Club",
     subtitle: "Experience Luxury Nightlife",
     videoUrl: "https://example.com/video.mp4",
+    youtubeEmbed:
+      "https://www.youtube.com/embed/UzswywOA1qU?si=xHvwDqoyHS5ZCfhD&autoplay=1&mute=1&loop=1&playlist=UzswywOA1qU&controls=0&showinfo=0&rel=0",
   },
   eventCategories: [
     {
@@ -224,11 +277,13 @@ const initialContent: ContentState = {
     ],
   },
   contact: {
-    address: "123 Nightlife Ave, Los Angeles, CA 90001",
+    address: "no. 53 Kpakani Street Port Harcourt",
     phone: "+1 (555) 123-4567",
     email: "info@dvanity.com",
     hours: "Thursday - Sunday: 10PM - 4AM",
     mapUrl: "https://maps.example.com/dvanity",
+    mapEmbed:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3975.5508083469196!2d6.9807909999999995!3d4.8511082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1069cf173bcc1951%3A0xda2ab1cc8bab4e45!2sG-throne%20Hotel%20and%20Suites!5e0!3m2!1sen!2sng!4v1716294000000!5m2!1sen!2sng",
   },
   bottleService: [
     {
@@ -258,6 +313,54 @@ const initialContent: ContentState = {
         "https://images.unsplash.com/photo-1605270012917-bf357a1fae9e?w=800&q=80",
     },
   ],
+  navbar: {
+    links: [
+      { id: "1", name: "Home", path: "/" },
+      { id: "2", name: "Events", path: "events" },
+      { id: "3", name: "Gallery", path: "gallery" },
+      { id: "4", name: "About", path: "about" },
+      { id: "5", name: "Contact", path: "contact" },
+      { id: "6", name: "Bottle Service", path: "bottle-service" },
+    ],
+    adminButtonText: "Admin",
+    logo: "",
+  },
+  footer: {
+    socialLinks: [
+      {
+        id: "1",
+        platform: "Facebook",
+        url: "https://web.facebook.com/DVanityPremiumClub/",
+      },
+      {
+        id: "2",
+        platform: "Instagram",
+        url: "https://www.instagram.com/dvanity_premiumclub/",
+      },
+      { id: "3", platform: "Twitter", url: "https://x.com/DVanityPremClub" },
+      {
+        id: "4",
+        platform: "LinkedIn",
+        url: "https://www.linkedin.com/in/d-vanity-premium-club-077275357",
+      },
+      {
+        id: "5",
+        platform: "Google Business",
+        url: "https://g.co/kgs/yQUJ3vP",
+      },
+    ],
+    quickLinks: [
+      { id: "1", name: "Home", path: "#" },
+      { id: "2", name: "Events", path: "#events" },
+      { id: "3", name: "Gallery", path: "#gallery" },
+      { id: "4", name: "About", path: "#about" },
+      { id: "5", name: "Contact", path: "#contact" },
+      { id: "6", name: "Bottle Service", path: "#bottle-service" },
+    ],
+    newsletterEnabled: true,
+    copyrightText: "© Dvanity Night Club. All rights reserved.",
+    logo: "",
+  },
 };
 
 // Create the context
@@ -270,8 +373,8 @@ const generateId = () => Math.random().toString(36).substr(2, 9);
 export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // Try to load content from localStorage, or use initial content
   const [content, setContent] = useState<ContentState>(() => {
+    // Try to load content from localStorage, or use initial content
     const savedContent = localStorage.getItem("dvanityContent");
     return savedContent ? JSON.parse(savedContent) : initialContent;
   });
@@ -470,6 +573,115 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({
     }));
   };
 
+  // Navbar functions
+  const updateNavbar = (data: NavbarContent) => {
+    setContent((prev) => ({ ...prev, navbar: data }));
+  };
+
+  const addNavLink = (link: NavLink) => {
+    const newLink = { ...link, id: generateId() };
+    setContent((prev) => ({
+      ...prev,
+      navbar: {
+        ...prev.navbar,
+        links: [...prev.navbar.links, newLink],
+      },
+    }));
+  };
+
+  const updateNavLink = (id: string, link: Partial<NavLink>) => {
+    setContent((prev) => ({
+      ...prev,
+      navbar: {
+        ...prev.navbar,
+        links: prev.navbar.links.map((l) =>
+          l.id === id ? { ...l, ...link } : l,
+        ),
+      },
+    }));
+  };
+
+  const deleteNavLink = (id: string) => {
+    setContent((prev) => ({
+      ...prev,
+      navbar: {
+        ...prev.navbar,
+        links: prev.navbar.links.filter((l) => l.id !== id),
+      },
+    }));
+  };
+
+  // Footer functions
+  const updateFooter = (data: FooterContent) => {
+    setContent((prev) => ({ ...prev, footer: data }));
+  };
+
+  const addSocialLink = (link: SocialLink) => {
+    const newLink = { ...link, id: generateId() };
+    setContent((prev) => ({
+      ...prev,
+      footer: {
+        ...prev.footer,
+        socialLinks: [...prev.footer.socialLinks, newLink],
+      },
+    }));
+  };
+
+  const updateSocialLink = (id: string, link: Partial<SocialLink>) => {
+    setContent((prev) => ({
+      ...prev,
+      footer: {
+        ...prev.footer,
+        socialLinks: prev.footer.socialLinks.map((l) =>
+          l.id === id ? { ...l, ...link } : l,
+        ),
+      },
+    }));
+  };
+
+  const deleteSocialLink = (id: string) => {
+    setContent((prev) => ({
+      ...prev,
+      footer: {
+        ...prev.footer,
+        socialLinks: prev.footer.socialLinks.filter((l) => l.id !== id),
+      },
+    }));
+  };
+
+  const addQuickLink = (link: QuickLink) => {
+    const newLink = { ...link, id: generateId() };
+    setContent((prev) => ({
+      ...prev,
+      footer: {
+        ...prev.footer,
+        quickLinks: [...prev.footer.quickLinks, newLink],
+      },
+    }));
+  };
+
+  const updateQuickLink = (id: string, link: Partial<QuickLink>) => {
+    setContent((prev) => ({
+      ...prev,
+      footer: {
+        ...prev.footer,
+        quickLinks: prev.footer.quickLinks.map((l) =>
+          l.id === id ? { ...l, ...link } : l,
+        ),
+      },
+    }));
+  };
+
+  const deleteQuickLink = (id: string) => {
+    setContent((prev) => ({
+      ...prev,
+      footer: {
+        ...prev.footer,
+        quickLinks: prev.footer.quickLinks.filter((l) => l.id !== id),
+      },
+    }));
+  };
+
   const value = {
     content,
     updateHero,
@@ -498,6 +710,17 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({
     addBottlePackage,
     updateBottlePackage,
     deleteBottlePackage,
+    updateNavbar,
+    addNavLink,
+    updateNavLink,
+    deleteNavLink,
+    updateFooter,
+    addSocialLink,
+    updateSocialLink,
+    deleteSocialLink,
+    addQuickLink,
+    updateQuickLink,
+    deleteQuickLink,
   };
 
   return (

@@ -116,11 +116,16 @@ const GallerySection = ({
       : galleryImages.filter((image) => image.category === selectedCategory);
 
   return (
-    <section className="w-full py-16 bg-black text-white" id="gallery">
+    <section
+      className="w-full py-16 bg-white dark:bg-black text-black dark:text-white"
+      id="gallery"
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4 text-gold-500">{title}</h2>
-          <p className="text-lg max-w-3xl mx-auto text-gray-300">
+          <h2 className="text-4xl font-bold mb-4 text-amber-600 dark:text-gold-500">
+            {title}
+          </h2>
+          <p className="text-lg max-w-3xl mx-auto text-gray-700 dark:text-gray-300">
             {description}
           </p>
         </div>
@@ -133,10 +138,10 @@ const GallerySection = ({
               variant={selectedCategory === category ? "default" : "outline"}
               onClick={() => setSelectedCategory(category)}
               className={cn(
-                "border-gold-500",
+                "border-amber-600 dark:border-gold-500",
                 selectedCategory === category
-                  ? "bg-gold-500 text-black"
-                  : "text-gold-500 bg-gold-500/10",
+                  ? "bg-amber-600 dark:bg-gold-500 text-white dark:text-black"
+                  : "text-amber-600 dark:text-gold-500 bg-amber-600/10 dark:bg-gold-500/10",
               )}
             >
               {category}
@@ -150,7 +155,7 @@ const GallerySection = ({
             <Dialog key={image.id}>
               <DialogTrigger asChild>
                 <div
-                  className="relative overflow-hidden rounded-lg cursor-pointer h-64"
+                  className="relative overflow-hidden rounded-lg cursor-pointer h-64 shadow-md"
                   onClick={() => setSelectedImage(image)}
                 >
                   <img
@@ -165,17 +170,19 @@ const GallerySection = ({
                   </div>
                 </div>
               </DialogTrigger>
-              <DialogContent className="max-w-4xl bg-black border border-gold-500 p-0">
+              <DialogContent className="max-w-4xl bg-white dark:bg-black border border-amber-600 dark:border-gold-500 p-0">
                 <div className="relative">
                   <img
                     src={image.src}
                     alt={image.alt}
                     className="w-full h-auto max-h-[80vh] object-contain"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-4">
-                    <p className="text-white text-lg">{image.alt}</p>
+                  <div className="absolute bottom-0 left-0 right-0 bg-white dark:bg-black bg-opacity-70 dark:bg-opacity-70 p-4">
+                    <p className="text-black dark:text-white text-lg">
+                      {image.alt}
+                    </p>
                     {image.category && (
-                      <span className="inline-block mt-2 px-3 py-1 bg-gold-500 text-black text-xs font-medium rounded-full">
+                      <span className="inline-block mt-2 px-3 py-1 bg-amber-600 dark:bg-gold-500 text-white dark:text-black text-xs font-medium rounded-full">
                         {image.category}
                       </span>
                     )}
@@ -188,7 +195,9 @@ const GallerySection = ({
 
         {filteredImages.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-400">No images found in this category.</p>
+            <p className="text-gray-600 dark:text-gray-400">
+              No images found in this category.
+            </p>
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +20,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useContent } from "@/context/ContentContext";
 
 interface Event {
@@ -44,11 +44,11 @@ const defaultEvents: Event[] = [
     title: "DJ Midnight Sensation",
     date: "FRI, OCT 15",
     time: "10:00 PM - 3:00 AM",
-    location: "Main Floor",
     description:
-      "Experience the electrifying beats of DJ Midnight Sensation as they take over our main floor for a night of unforgettable house music.",
+      "Experience the electrifying beats of DJ Midnight Sensation as they take over our main floor for a night of unforgettable music.",
     image:
-      "https://images.unsplash.com/photo-1571397133301-3f1b6ae00227?w=800&q=80",
+      "https://images.unsplash.com/photo-1571600097567-920df4a97ace?w=800&q=80",
+    location: "Main Floor",
     category: "music",
     capacity: 300,
   },
@@ -56,225 +56,263 @@ const defaultEvents: Event[] = [
     id: "2",
     title: "VIP Bottle Service Night",
     date: "SAT, OCT 16",
-    time: "9:00 PM - 2:00 AM",
-    location: "VIP Lounge",
+    time: "9:00 PM - 3:00 AM",
     description:
-      "Indulge in our premium bottle service experience with exclusive access to our VIP lounge and personal service throughout the night.",
+      "Indulge in our premium bottle service experience with exclusive VIP treatment and the best views of the dance floor.",
     image:
       "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=800&q=80",
+    location: "VIP Lounge",
     category: "vip",
     capacity: 100,
+  },
+  {
+    id: "3",
+    title: "Industry Night",
+    date: "MON, OCT 18",
+    time: "8:00 PM - 2:00 AM",
+    description:
+      "A special night dedicated to our industry friends with exclusive drink specials and networking opportunities.",
+    image:
+      "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=800&q=80",
+    location: "Entire Venue",
+    category: "special",
+    capacity: 250,
   },
 ];
 
 const EventsSection: React.FC<EventsSectionProps> = ({
   events = defaultEvents,
 }) => {
-  const { content } = useContent();
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [activeTab, setActiveTab] = useState("all");
+  const { content } = useContent();
+
+  // Use content from context if available
+  const [displayEvents, setDisplayEvents] = useState<Event[]>(events);
   const [categories, setCategories] = useState<
     { id: string; name: string; slug: string }[]
   >([]);
 
   useEffect(() => {
-    if (content.eventCategories && content.eventCategories.length > 0) {
+    if (content?.events && content.events.length > 0) {
+      setDisplayEvents(content.events);
+    }
+
+    if (content?.eventCategories && content.eventCategories.length > 0) {
       setCategories(content.eventCategories);
     }
-  }, [content.eventCategories]);
-
-  // Add default properties to events if missing
-  const processedEvents =
-    events?.map((event) => ({
-      ...event,
-      time: event.time || "10:00 PM - 3:00 AM",
-      location: event.location || "Main Floor",
-      category: event.category || ("special" as "music" | "vip" | "special"),
-      capacity: event.capacity || 250,
-    })) || [];
+  }, [content]);
 
   const filteredEvents =
-    selectedCategory === "all"
-      ? processedEvents
-      : processedEvents.filter((event) => event.category === selectedCategory);
+    activeTab === "all"
+      ? displayEvents
+      : displayEvents.filter((event) => event.category === activeTab);
 
   return (
-    <section className="py-16 bg-black text-white" id="events">
+    <section className="py-16 bg-white dark:bg-black transition-colors duration-200">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4 text-gold">Upcoming Events</h2>
-          <p className="text-lg max-w-2xl mx-auto text-gray-300">
-            Experience unforgettable nights at Dvanity with our curated events
-            featuring world-class DJs, exclusive parties, and special themed
-            nights.
+          <h2 className="text-4xl font-bold text-amber-600 dark:text-gold mb-4">
+            Upcoming Events
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Join us for unforgettable nights featuring world-class DJs,
+            exclusive parties, and premium experiences.
           </p>
         </div>
 
-        <Tabs defaultValue="all" className="w-full mb-8">
-          <div className="flex justify-center">
-            <TabsList className="bg-gray-900 border border-gold/30">
-              <TabsTrigger
-                value="all"
-                onClick={() => setSelectedCategory("all")}
-                className="border-gold-500 text-gold-500 bg-gold-500/10 data-[state=active]:bg-gold-500 data-[state=active]:text-black"
-              >
-                All Events
-              </TabsTrigger>
-              {categories.map((category) => (
-                <TabsTrigger
-                  key={category.id}
-                  value={category.slug}
-                  onClick={() => setSelectedCategory(category.slug)}
-                  className="border-gold-500 text-gold-500 bg-gold-500/10 data-[state=active]:bg-gold-500 data-[state=active]:text-black"
-                >
-                  {category.name}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </div>
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center gap-4 mb-10">
+          <Button
+            onClick={() => setActiveTab("all")}
+            variant={activeTab === "all" ? "default" : "outline"}
+            className={cn(
+              "border-amber-600 dark:border-gold-500",
+              activeTab === "all"
+                ? "bg-amber-600 dark:bg-gold-500 text-white dark:text-black"
+                : "text-amber-600 dark:text-gold-500 bg-amber-600/10 dark:bg-gold-500/10",
+            )}
+          >
+            All Events
+          </Button>
+          <Button
+            onClick={() => setActiveTab("music")}
+            variant={activeTab === "music" ? "default" : "outline"}
+            className={cn(
+              "border-amber-600 dark:border-gold-500",
+              activeTab === "music"
+                ? "bg-amber-600 dark:bg-gold-500 text-white dark:text-black"
+                : "text-amber-600 dark:text-gold-500 bg-amber-600/10 dark:bg-gold-500/10",
+            )}
+          >
+            Music
+          </Button>
+          <Button
+            onClick={() => setActiveTab("vip")}
+            variant={activeTab === "vip" ? "default" : "outline"}
+            className={cn(
+              "border-amber-600 dark:border-gold-500",
+              activeTab === "vip"
+                ? "bg-amber-600 dark:bg-gold-500 text-white dark:text-black"
+                : "text-amber-600 dark:text-gold-500 bg-amber-600/10 dark:bg-gold-500/10",
+            )}
+          >
+            VIP
+          </Button>
+          <Button
+            onClick={() => setActiveTab("special")}
+            variant={activeTab === "special" ? "default" : "outline"}
+            className={cn(
+              "border-amber-600 dark:border-gold-500",
+              activeTab === "special"
+                ? "bg-amber-600 dark:bg-gold-500 text-white dark:text-black"
+                : "text-amber-600 dark:text-gold-500 bg-amber-600/10 dark:bg-gold-500/10",
+            )}
+          >
+            Special
+          </Button>
+        </div>
 
-          <TabsContent value="all" className="mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredEvents.map((event) => (
-                <EventCard
-                  key={event.id}
-                  event={event}
-                  onClick={() => setSelectedEvent(event)}
-                />
-              ))}
-            </div>
-          </TabsContent>
-          {categories.map((category) => (
-            <TabsContent
-              key={category.id}
-              value={category.slug}
-              className="mt-8"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredEvents.map((event) => (
+            <Card
+              key={event.id}
+              className="overflow-hidden border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 transition-colors duration-200"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredEvents.map((event) => (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                    onClick={() => setSelectedEvent(event)}
-                  />
-                ))}
+              <div className="h-48 overflow-hidden">
+                <img
+                  src={event.image}
+                  alt={event.title}
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                />
               </div>
-            </TabsContent>
-          ))}
-        </Tabs>
+              <CardHeader>
+                <CardTitle className="text-amber-600 dark:text-gold">
+                  {event.title}
+                </CardTitle>
+                <CardDescription className="flex items-center text-gray-600 dark:text-gray-400">
+                  <Calendar className="h-4 w-4 mr-1" />
+                  {event.date}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-700 dark:text-gray-300 line-clamp-3">
+                  {event.description}
+                </p>
 
-        {selectedEvent && (
-          <EventDetailsDialog
-            event={selectedEvent}
-            open={!!selectedEvent}
-            onClose={() => setSelectedEvent(null)}
-          />
-        )}
+                {event.time && (
+                  <div className="flex items-center mt-3 text-gray-600 dark:text-gray-400">
+                    <Clock className="h-4 w-4 mr-2" />
+                    <span className="text-sm">{event.time}</span>
+                  </div>
+                )}
+
+                {event.location && (
+                  <div className="flex items-center mt-2 text-gray-600 dark:text-gray-400">
+                    <MapPin className="h-4 w-4 mr-2" />
+                    <span className="text-sm">{event.location}</span>
+                  </div>
+                )}
+
+                {event.capacity && (
+                  <div className="flex items-center mt-2 text-gray-600 dark:text-gray-400">
+                    <Users className="h-4 w-4 mr-2" />
+                    <span className="text-sm">Capacity: {event.capacity}</span>
+                  </div>
+                )}
+              </CardContent>
+              <CardFooter>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      className="w-full bg-amber-600 hover:bg-amber-700 dark:bg-gold dark:hover:bg-gold/90 text-white dark:text-black"
+                      onClick={() => setSelectedEvent(event)}
+                    >
+                      View Details
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 text-gray-800 dark:text-white">
+                    <DialogHeader>
+                      <DialogTitle className="text-amber-600 dark:text-gold text-2xl">
+                        {selectedEvent?.title}
+                      </DialogTitle>
+                      <DialogDescription className="text-gray-600 dark:text-gray-400 flex items-center">
+                        <Calendar className="h-4 w-4 mr-1" />
+                        {selectedEvent?.date}
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="mt-4">
+                      <img
+                        src={selectedEvent?.image}
+                        alt={selectedEvent?.title}
+                        className="w-full h-64 object-cover rounded-md"
+                      />
+
+                      <div className="mt-4 space-y-3">
+                        <p className="text-gray-700 dark:text-gray-300">
+                          {selectedEvent?.description}
+                        </p>
+
+                        <div className="grid grid-cols-2 gap-4 mt-4">
+                          {selectedEvent?.time && (
+                            <div className="flex items-center text-gray-600 dark:text-gray-400">
+                              <Clock className="h-5 w-5 mr-2" />
+                              <span>{selectedEvent.time}</span>
+                            </div>
+                          )}
+
+                          {selectedEvent?.location && (
+                            <div className="flex items-center text-gray-600 dark:text-gray-400">
+                              <MapPin className="h-5 w-5 mr-2" />
+                              <span>{selectedEvent.location}</span>
+                            </div>
+                          )}
+
+                          {selectedEvent?.capacity && (
+                            <div className="flex items-center text-gray-600 dark:text-gray-400">
+                              <Users className="h-5 w-5 mr-2" />
+                              <span>Capacity: {selectedEvent.capacity}</span>
+                            </div>
+                          )}
+
+                          {selectedEvent?.category && (
+                            <div className="flex items-center">
+                              <span className="px-3 py-1 bg-amber-100 dark:bg-gold/20 text-amber-600 dark:text-gold rounded-full text-sm">
+                                {categories.find(
+                                  (c) => c.slug === selectedEvent.category,
+                                )?.name || selectedEvent.category}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-6">
+                      <Button
+                        className="w-full bg-amber-600 hover:bg-amber-700 dark:bg-gold dark:hover:bg-gold/90 text-white dark:text-black"
+                        onClick={() => {
+                          const contactSection =
+                            document.getElementById("contact");
+                          if (contactSection) {
+                            contactSection.scrollIntoView({
+                              behavior: "smooth",
+                            });
+                          }
+                        }}
+                      >
+                        Reserve Now
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       </div>
     </section>
-  );
-};
-
-interface EventCardProps {
-  event: Event;
-  onClick: () => void;
-}
-
-const EventCard: React.FC<EventCardProps> = ({ event, onClick = () => {} }) => {
-  return (
-    <Card className="bg-gray-900 border border-gold overflow-hidden">
-      <div className="relative h-48 overflow-hidden">
-        <img
-          src={event.image}
-          alt={event.title}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute top-0 right-0 bg-gold text-black px-3 py-1 text-sm font-semibold">
-          {event.category?.toUpperCase() || "SPECIAL"}
-        </div>
-      </div>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-xl text-gold">{event.title}</CardTitle>
-        <CardDescription className="text-gray-400 flex items-center gap-2">
-          <Calendar className="h-4 w-4" /> {event.date}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        <div className="flex items-center gap-2 text-gray-300">
-          <Clock className="h-4 w-4 text-gold/70" /> {event.time}
-        </div>
-        <div className="flex items-center gap-2 text-gray-300">
-          <MapPin className="h-4 w-4 text-gold/70" /> {event.location}
-        </div>
-        <div className="flex items-center gap-2 text-gray-300">
-          <Users className="h-4 w-4 text-gold/70" /> Capacity: {event.capacity}
-        </div>
-        <p className="text-gray-400 line-clamp-2 mt-2">{event.description}</p>
-      </CardContent>
-      <CardFooter>
-        <Button onClick={onClick} className="w-full bg-gold text-black">
-          View Details
-        </Button>
-      </CardFooter>
-    </Card>
-  );
-};
-
-interface EventDetailsDialogProps {
-  event: Event;
-  open: boolean;
-  onClose: () => void;
-}
-
-const EventDetailsDialog: React.FC<EventDetailsDialogProps> = ({
-  event,
-  open = false,
-  onClose = () => {},
-}) => {
-  return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="bg-gray-900 border border-gold/30 max-w-3xl">
-        <DialogHeader>
-          <DialogTitle className="text-2xl text-gold">
-            {event.title}
-          </DialogTitle>
-          <DialogDescription className="text-gray-300">
-            {event.date} • {event.time}
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-          <div className="overflow-hidden rounded-lg">
-            <img
-              src={event.image}
-              alt={event.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <h4 className="text-lg font-semibold text-gold">Location</h4>
-              <p className="text-gray-300">{event.location}</p>
-            </div>
-
-            <div className="space-y-2">
-              <h4 className="text-lg font-semibold text-gold">Capacity</h4>
-              <p className="text-gray-300">{event.capacity} guests</p>
-            </div>
-
-            <div className="space-y-2">
-              <h4 className="text-lg font-semibold text-gold">Description</h4>
-              <p className="text-gray-300">{event.description}</p>
-            </div>
-
-            <Button className="w-full bg-gold text-black mt-4">
-              Reserve Now
-            </Button>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
   );
 };
 

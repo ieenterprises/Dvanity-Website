@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { useContent } from "@/context/ContentContext";
 
 interface NavbarProps {
   transparent?: boolean;
@@ -17,6 +18,7 @@ interface NavbarProps {
 const Navbar = ({ transparent = false }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { content } = useContent();
 
   // Handle scroll effect for transparent navbar
   useEffect(() => {
@@ -36,17 +38,22 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Events", path: "events" },
-    { name: "Gallery", path: "gallery" },
-    { name: "About", path: "about" },
-    { name: "Contact", path: "contact" },
-    { name: "Bottle Service", path: "bottle-service" },
+  // Use navigation links from content context, or fallback to defaults
+  const navLinks = content?.navbar?.links || [
+    { id: "1", name: "Home", path: "/" },
+    { id: "2", name: "Events", path: "events" },
+    { id: "3", name: "Gallery", path: "gallery" },
+    { id: "4", name: "About", path: "about" },
+    { id: "5", name: "Contact", path: "contact" },
+    { id: "6", name: "Bottle Service", path: "bottle-service" },
   ];
 
+  // Get admin button text from content context
+  const adminButtonText = content?.navbar?.adminButtonText || "Admin";
+
   const navbarClasses = cn("fixed w-full z-50 transition-all duration-300", {
-    "bg-black/90 backdrop-blur-sm shadow-lg": !transparent || scrolled,
+    "bg-white/90 dark:bg-black/90 backdrop-blur-sm shadow-lg":
+      !transparent || scrolled,
     "bg-transparent": transparent && !scrolled,
   });
 
@@ -56,9 +63,19 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-2xl font-bold text-gold-500 bg-gradient-to-r from-amber-400 to-yellow-600 bg-clip-text text-transparent">
-              DVANITY
-            </span>
+            {content?.navbar?.logo ? (
+              <img
+                src={content.navbar.logo}
+                alt="Dvanity"
+                className="h-10 w-auto object-contain"
+              />
+            ) : (
+              <img
+                src="/logo.ico"
+                alt="D'Vanity"
+                className="h-10 w-auto object-contain"
+              />
+            )}
           </Link>
 
           {/* Desktop Navigation */}
@@ -69,24 +86,27 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
                 href={
                   link.path === "/" ? "/" : `#${link.path.replace("/", "")}`
                 }
-                className="text-white font-medium"
+                className="text-gray-800 dark:text-white font-medium hover:text-amber-600 dark:hover:text-amber-500"
               >
                 {link.name}
               </a>
             ))}
           </div>
 
-          {/* Admin Login Button (Desktop) */}
-          <div className="hidden md:block">
-            <Link to="/admin">
-              <Button
-                variant="outline"
-                className="border-amber-400 text-amber-400 bg-amber-400/10"
-              >
-                <User className="mr-2 h-4 w-4" />
-                Admin
-              </Button>
-            </Link>
+          {/* Admin Login Button (Desktop) - Hidden until hover */}
+          <div className="hidden md:block group relative">
+            <div className="absolute inset-0 w-32 h-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <Link to="/admin">
+                <Button
+                  variant="outline"
+                  className="border-amber-600 dark:border-amber-400 text-amber-600 dark:text-amber-400 bg-amber-600/10 dark:bg-amber-400/10 hover:bg-amber-600/20 dark:hover:bg-amber-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  <User className="mr-2 h-4 w-4" />
+                  {adminButtonText}
+                </Button>
+              </Link>
+            </div>
+            <div className="w-32 h-10"></div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -107,7 +127,7 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden bg-black/95 absolute left-0 right-0 top-16 p-4 border-t border-amber-900/30">
+          <div className="md:hidden bg-white/95 dark:bg-black/95 absolute left-0 right-0 top-16 p-4 border-t border-amber-600/30 dark:border-amber-900/30 transition-colors duration-200">
             <div className="flex flex-col space-y-4">
               {navLinks.map((link) => (
                 <a
@@ -115,7 +135,7 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
                   href={
                     link.path === "/" ? "/" : `#${link.path.replace("/", "")}`
                   }
-                  className="text-white py-2 font-medium"
+                  className="text-gray-800 dark:text-white py-2 font-medium hover:text-amber-600 dark:hover:text-amber-500"
                   onClick={() => setIsOpen(false)}
                 >
                   {link.name}
@@ -123,11 +143,11 @@ const Navbar = ({ transparent = false }: NavbarProps) => {
               ))}
               <Link
                 to="/admin"
-                className="text-amber-400 py-2 font-medium flex items-center"
+                className="text-amber-600 dark:text-amber-400 py-2 font-medium flex items-center hover:text-amber-700 dark:hover:text-amber-500"
                 onClick={() => setIsOpen(false)}
               >
                 <User className="mr-2 h-4 w-4" />
-                Admin Login
+                {adminButtonText}
               </Link>
             </div>
           </div>
