@@ -138,7 +138,7 @@ const ContactSection = ({
                     href="https://tawk.to/chat/67dd45e522662b190d7b8c8c/1ims5i2gb"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-amber-600 dark:text-amber-400 hover:underline font-medium"
+                    className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
                   >
                     Click here to chat with us live
                   </a>{" "}
