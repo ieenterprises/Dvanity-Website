@@ -27,6 +27,7 @@ interface FooterProps {
     twitter?: string;
     linkedin?: string;
     googleBusiness?: string;
+    tiktok?: string;
   };
   contactInfo?: {
     email?: string;
@@ -43,6 +44,7 @@ const Footer = ({
     twitter: "https://twitter.com/dvanity",
     linkedin: "https://linkedin.com/company/dvanity",
     googleBusiness: "https://business.google.com/dvanity",
+    tiktok: "https://tiktok.com/@dvanity",
   },
   contactInfo = {
     email: "info@dvanity.com",
@@ -223,6 +225,17 @@ const Footer = ({
                     )}
                   >
                     <Building2 size={18} />
+                  </a>
+                  <a
+                    href={socialLinks.tiktok}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center",
+                      theme === "dark" ? "bg-black" : "bg-amber-50",
+                    )}
+                  >
+                    <TikTokIcon size={18} />
                   </a>
                 </>
               )}
