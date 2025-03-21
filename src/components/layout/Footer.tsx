@@ -58,6 +58,7 @@ const Footer = ({
 
   // Get footer content from context
   const footerContent = content?.footer;
+  const contactContent = content?.contact;
   const footerSocialLinks = footerContent?.socialLinks || [];
   const quickLinks = footerContent?.quickLinks || [];
   const newsletterEnabled = footerContent?.newsletterEnabled !== false;
@@ -345,7 +346,7 @@ const Footer = ({
                     theme === "dark" ? "text-gray-400" : "text-gray-600"
                   }
                 >
-                  {contactInfo.address}
+                  {contactContent?.address || contactInfo.address}
                 </span>
               </li>
               <li className="flex items-center">
@@ -354,23 +355,23 @@ const Footer = ({
                   size={18}
                 />
                 <a
-                  href={`tel:${contactInfo.phone}`}
+                  href={`tel:${contactContent?.phone || contactInfo.phone}`}
                   className={
                     theme === "dark" ? "text-gray-400" : "text-gray-600"
                   }
                 >
-                  {contactInfo.phone}
+                  {contactContent?.phone || contactInfo.phone}
                 </a>
               </li>
               <li className="flex items-center">
                 <Mail className="mr-2 text-amber-500 flex-shrink-0" size={18} />
                 <a
-                  href={`mailto:${contactInfo.email}`}
+                  href={`mailto:${contactContent?.email || contactInfo.email}`}
                   className={
                     theme === "dark" ? "text-gray-400" : "text-gray-600"
                   }
                 >
-                  {contactInfo.email}
+                  {contactContent?.email || contactInfo.email}
                 </a>
               </li>
             </ul>
