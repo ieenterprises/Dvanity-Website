@@ -290,7 +290,18 @@ const EventsSection: React.FC<EventsSectionProps> = ({
                     </div>
 
                     <div className="mt-6">
-                      <Button className="w-full bg-amber-600 hover:bg-amber-700 dark:bg-gold dark:hover:bg-gold/90 text-white dark:text-black">
+                      <Button
+                        className="w-full bg-amber-600 hover:bg-amber-700 dark:bg-gold dark:hover:bg-gold/90 text-white dark:text-black"
+                        onClick={() => {
+                          const contactSection =
+                            document.getElementById("contact");
+                          if (contactSection) {
+                            contactSection.scrollIntoView({
+                              behavior: "smooth",
+                            });
+                          }
+                        }}
+                      >
                         Reserve Now
                       </Button>
                     </div>

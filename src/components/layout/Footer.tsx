@@ -307,35 +307,7 @@ const Footer = ({
             </ul>
           </div>
 
-          {/* Newsletter */}
-          {newsletterEnabled && (
-            <div className="col-span-1">
-              <h4 className="text-xl font-semibold mb-4 text-amber-500">
-                Newsletter
-              </h4>
-              <p
-                className={cn(
-                  "mb-4",
-                  theme === "dark" ? "text-gray-400" : "text-gray-600",
-                )}
-              >
-                Subscribe to our newsletter for exclusive updates and offers.
-              </p>
-              <div className="flex flex-col space-y-3">
-                <Input
-                  type="email"
-                  placeholder="Your email address"
-                  className={cn(
-                    "border-amber-500/30 focus-visible:ring-amber-500",
-                    theme === "dark" ? "bg-gray-900" : "bg-gray-100",
-                  )}
-                />
-                <Button className="bg-amber-500 text-black font-semibold">
-                  Subscribe
-                </Button>
-              </div>
-            </div>
-          )}
+          {/* Newsletter section removed */}
         </div>
 
         <div

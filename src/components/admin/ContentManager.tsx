@@ -567,6 +567,36 @@ const ContentManager = ({
     });
   };
 
+  // Update social link
+  const updateSocialLink = (id: string, link: Partial<SocialLink>) => {
+    if (content?.footer?.socialLinks) {
+      const updatedSocialLinks = content.footer.socialLinks.map((l) =>
+        l.id === id ? { ...l, ...link } : l,
+      );
+      updateFooter({
+        ...content.footer,
+        socialLinks: updatedSocialLinks,
+      });
+    }
+  };
+
+  // Delete social link
+  const deleteSocialLink = (id: string) => {
+    if (content?.footer?.socialLinks) {
+      const updatedSocialLinks = content.footer.socialLinks.filter(
+        (l) => l.id !== id,
+      );
+      updateFooter({
+        ...content.footer,
+        socialLinks: updatedSocialLinks,
+      });
+      toast({
+        title: "Social link deleted",
+        description: "Social media link has been removed successfully.",
+      });
+    }
+  };
+
   // Add new quick link
   const handleAddQuickLink = () => {
     if (!newQuickLink.name || !newQuickLink.path) {
@@ -2366,9 +2396,19 @@ const ContentManager = ({
                       {link.platform.toLowerCase() === "twitter" && (
                         <Twitter className="h-5 w-5 text-amber-600 dark:text-gold" />
                       )}
-                      {!["facebook", "instagram", "twitter"].includes(
-                        link.platform.toLowerCase(),
-                      ) && (
+                      {link.platform.toLowerCase() === "linkedin" && (
+                        <Linkedin className="h-5 w-5 text-amber-600 dark:text-gold" />
+                      )}
+                      {link.platform.toLowerCase() === "youtube" && (
+                        <Youtube className="h-5 w-5 text-amber-600 dark:text-gold" />
+                      )}
+                      {![
+                        "facebook",
+                        "instagram",
+                        "twitter",
+                        "linkedin",
+                        "youtube",
+                      ].includes(link.platform.toLowerCase()) && (
                         <ExternalLink className="h-5 w-5 text-amber-600 dark:text-gold" />
                       )}
                     </div>
@@ -2550,24 +2590,7 @@ const ContentManager = ({
                     150x50px.
                   </p>
                 </div>
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium">
-                    Enable Newsletter Signup
-                  </label>
-                  <div
-                    className={`w-12 h-6 rounded-full flex items-center p-1 cursor-pointer transition-colors ${footerContent?.newsletterEnabled ? "bg-amber-600 dark:bg-gold" : "bg-gray-300 dark:bg-gray-700"}`}
-                    onClick={() =>
-                      setFooterContent({
-                        ...footerContent,
-                        newsletterEnabled: !footerContent?.newsletterEnabled,
-                      })
-                    }
-                  >
-                    <div
-                      className={`w-4 h-4 rounded-full bg-white transform transition-transform ${footerContent?.newsletterEnabled ? "translate-x-6" : "translate-x-0"}`}
-                    ></div>
-                  </div>
-                </div>
+                {/* Newsletter toggle removed */}
                 <div>
                   <label className="block text-sm font-medium mb-1">
                     Copyright Text
@@ -2628,6 +2651,11 @@ const ContentManager = ({
                       <SelectItem value="LinkedIn">LinkedIn</SelectItem>
                       <SelectItem value="YouTube">YouTube</SelectItem>
                       <SelectItem value="TikTok">TikTok</SelectItem>
+                      <SelectItem value="Pinterest">Pinterest</SelectItem>
+                      <SelectItem value="Snapchat">Snapchat</SelectItem>
+                      <SelectItem value="WhatsApp">WhatsApp</SelectItem>
+                      <SelectItem value="Telegram">Telegram</SelectItem>
+                      <SelectItem value="Discord">Discord</SelectItem>
                       <SelectItem value="Other">Other</SelectItem>
                     </SelectContent>
                   </Select>
@@ -2645,6 +2673,42 @@ const ContentManager = ({
                     className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                     placeholder="https://"
                   />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    The icon will be automatically selected based on the
+                    platform. Supported icons: Facebook, Instagram, Twitter,
+                    LinkedIn, YouTube, and more.
+                  </p>
+                  <div className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                    <span className="text-sm font-medium">Preview:</span>
+                    <div className="w-8 h-8 rounded-full border border-amber-500 flex items-center justify-center">
+                      {newSocialLink.platform.toLowerCase() === "facebook" && (
+                        <Facebook className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                      {newSocialLink.platform.toLowerCase() === "instagram" && (
+                        <Instagram className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                      {newSocialLink.platform.toLowerCase() === "twitter" && (
+                        <Twitter className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                      {newSocialLink.platform.toLowerCase() === "linkedin" && (
+                        <Linkedin className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                      {newSocialLink.platform.toLowerCase() === "youtube" && (
+                        <Youtube className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                      {![
+                        "facebook",
+                        "instagram",
+                        "twitter",
+                        "linkedin",
+                        "youtube",
+                      ].includes(newSocialLink.platform.toLowerCase()) && (
+                        <ExternalLink className="h-4 w-4 text-amber-600 dark:text-gold" />
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
               <DialogFooter>
@@ -2675,6 +2739,7 @@ const ContentManager = ({
                       handleAddSocialLink();
                     }
                     setEditingItemId(null);
+                    setIsAddingSocialLink(false);
                   }}
                 >
                   {editingItemId ? "Update" : "Add"} Link

@@ -181,7 +181,15 @@ const BottleServiceSection = ({
               </CardContent>
 
               <CardFooter className="pt-4 border-t border-gray-200 dark:border-gray-800">
-                <Button className="w-full bg-amber-600 dark:bg-gold-500 text-white dark:text-black hover:bg-amber-700 dark:hover:bg-gold-600">
+                <Button
+                  className="w-full bg-amber-600 dark:bg-gold-500 text-white dark:text-black hover:bg-amber-700 dark:hover:bg-gold-600"
+                  onClick={() => {
+                    const contactSection = document.getElementById("contact");
+                    if (contactSection) {
+                      contactSection.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                >
                   Reserve Now
                 </Button>
               </CardFooter>
@@ -198,6 +206,12 @@ const BottleServiceSection = ({
           <Button
             variant="outline"
             className="border-amber-600 dark:border-gold-500 text-amber-600 dark:text-gold-500 bg-amber-600/10 dark:bg-gold-500/10 hover:bg-amber-600/20 dark:hover:bg-gold-500/20"
+            onClick={() => {
+              const contactSection = document.getElementById("contact");
+              if (contactSection) {
+                contactSection.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
           >
             Contact for Custom Packages
           </Button>

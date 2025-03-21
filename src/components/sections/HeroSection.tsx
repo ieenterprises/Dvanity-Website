@@ -122,7 +122,14 @@ const HeroSection = ({
           </p>
           <div className="flex items-center justify-center space-x-4">
             <Button
-              onClick={onCtaClick}
+              onClick={() => {
+                const contactSection = document.getElementById("contact");
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: "smooth" });
+                } else if (onCtaClick) {
+                  onCtaClick();
+                }
+              }}
               className="border-2 border-amber-400 bg-amber-400 px-8 py-6 text-lg font-semibold text-black"
             >
               {ctaText}
