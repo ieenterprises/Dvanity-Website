@@ -12,6 +12,7 @@ import {
   X,
   Globe,
 } from "lucide-react";
+import TikTokIcon from "@/components/ui/tiktok-icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -24,6 +25,8 @@ interface FooterProps {
     facebook?: string;
     instagram?: string;
     twitter?: string;
+    linkedin?: string;
+    googleBusiness?: string;
   };
   contactInfo?: {
     email?: string;
@@ -38,6 +41,8 @@ const Footer = ({
     facebook: "https://facebook.com/dvanity",
     instagram: "https://instagram.com/dvanity",
     twitter: "https://twitter.com/dvanity",
+    linkedin: "https://linkedin.com/company/dvanity",
+    googleBusiness: "https://business.google.com/dvanity",
   },
   contactInfo = {
     email: "info@dvanity.com",
@@ -127,7 +132,7 @@ const Footer = ({
                       <ExternalLink size={18} />
                     )}
                     {link.platform.toLowerCase() === "tiktok" && (
-                      <ExternalLink size={18} />
+                      <TikTokIcon size={18} />
                     )}
                     {link.platform.toLowerCase() === "snapchat" && (
                       <ExternalLink size={18} />
@@ -196,6 +201,28 @@ const Footer = ({
                     )}
                   >
                     <X size={18} />
+                  </a>
+                  <a
+                    href={socialLinks.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center",
+                      theme === "dark" ? "bg-black" : "bg-amber-50",
+                    )}
+                  >
+                    <Linkedin size={18} />
+                  </a>
+                  <a
+                    href={socialLinks.googleBusiness}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center",
+                      theme === "dark" ? "bg-black" : "bg-amber-50",
+                    )}
+                  >
+                    <Building2 size={18} />
                   </a>
                 </>
               )}

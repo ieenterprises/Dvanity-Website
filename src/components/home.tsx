@@ -29,16 +29,7 @@ const Home = () => {
       <GallerySection images={content.gallery} />
 
       {/* About Section */}
-      <AboutSection
-        title={content.about.title}
-        description={content.about.description}
-        teamMembers={content.about.teamMembers.map((member) => ({
-          name: member.name,
-          role: member.role,
-          image: member.image,
-          bio: "Team member at Dvanity Night Club",
-        }))}
-      />
+      <AboutSection useContentContext={true} />
 
       {/* Contact & Reservation Section */}
       <ContactSection

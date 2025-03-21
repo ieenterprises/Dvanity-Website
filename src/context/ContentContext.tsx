@@ -46,7 +46,10 @@ type TeamMember = {
 
 type AboutContent = {
   title: string;
+  subtitle?: string;
   description: string;
+  history?: string;
+  mission?: string;
   teamMembers: TeamMember[];
 };
 

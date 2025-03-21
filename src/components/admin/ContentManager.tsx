@@ -1595,6 +1595,21 @@ const ContentManager = ({
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">
+                  Subtitle
+                </label>
+                <Input
+                  value={aboutContent.subtitle || ""}
+                  onChange={(e) =>
+                    setAboutContent({
+                      ...aboutContent,
+                      subtitle: e.target.value,
+                    })
+                  }
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">
                   Description
                 </label>
                 <Textarea
@@ -1603,6 +1618,38 @@ const ContentManager = ({
                     setAboutContent({
                       ...aboutContent,
                       description: e.target.value,
+                    })
+                  }
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                  rows={5}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Our History
+                </label>
+                <Textarea
+                  value={aboutContent.history || ""}
+                  onChange={(e) =>
+                    setAboutContent({
+                      ...aboutContent,
+                      history: e.target.value,
+                    })
+                  }
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                  rows={5}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Our Mission
+                </label>
+                <Textarea
+                  value={aboutContent.mission || ""}
+                  onChange={(e) =>
+                    setAboutContent({
+                      ...aboutContent,
+                      mission: e.target.value,
                     })
                   }
                   className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"

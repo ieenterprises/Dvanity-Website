@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useContent } from "@/context/ContentContext";
 
 interface TeamMemberProps {
   name: string;
@@ -38,6 +39,7 @@ interface AboutSectionProps {
   history?: string;
   mission?: string;
   teamMembers?: TeamMemberProps[];
+  useContentContext?: boolean;
 }
 
 const AboutSection = ({
@@ -46,6 +48,7 @@ const AboutSection = ({
   description = "Dvanity Night Club is the epitome of luxury nightlife, offering an unparalleled experience in the heart of the city. Our venue combines elegant design, state-of-the-art sound systems, and exceptional service to create unforgettable nights.",
   history = "Founded in 2015, Dvanity quickly established itself as the go-to destination for celebrities, influencers, and nightlife enthusiasts. Our journey began with a vision to create a space where luxury meets entertainment, and we've been setting the standard for nightlife excellence ever since.",
   mission = "Our mission is to provide an extraordinary nightlife experience that transcends the ordinary. We are committed to creating a safe, inclusive environment where guests can enjoy premium entertainment, exceptional service, and unforgettable moments.",
+  useContentContext = false,
   teamMembers = [
     {
       name: "Alexander Reynolds",
@@ -73,6 +76,25 @@ const AboutSection = ({
     },
   ],
 }: AboutSectionProps) => {
+  const { content } = useContent();
+
+  // Use content from context if useContentContext is true
+  const displayTitle = useContentContext ? content.about.title : title;
+  const displaySubtitle = useContentContext
+    ? content.about.subtitle || subtitle
+    : subtitle;
+  const displayDescription = useContentContext
+    ? content.about.description
+    : description;
+  const displayHistory = useContentContext
+    ? content.about.history || history
+    : history;
+  const displayMission = useContentContext
+    ? content.about.mission || mission
+    : mission;
+  const displayTeamMembers = useContentContext
+    ? content.about.teamMembers
+    : teamMembers;
   return (
     <section
       id="about"
@@ -82,10 +104,10 @@ const AboutSection = ({
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-amber-600 dark:text-gold mb-4">
-            {title}
+            {displayTitle}
           </h2>
           <p className="text-xl text-amber-600/70 dark:text-gold/70 mb-8">
-            {subtitle}
+            {displaySubtitle}
           </p>
           <div className="w-24 h-1 bg-amber-600 dark:bg-gold mx-auto"></div>
         </div>
@@ -93,7 +115,7 @@ const AboutSection = ({
         {/* Main Description */}
         <div className="max-w-3xl mx-auto text-center mb-16">
           <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-            {description}
+            {displayDescription}
           </p>
         </div>
 
@@ -104,7 +126,7 @@ const AboutSection = ({
               Our History
             </h3>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              {history}
+              {displayHistory}
             </p>
           </div>
           <div className="bg-gray-100/80 dark:bg-gray-900/50 p-8 rounded-lg border border-amber-600/20 dark:border-gold/20">
@@ -112,7 +134,7 @@ const AboutSection = ({
               Our Mission
             </h3>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              {mission}
+              {displayMission}
             </p>
           </div>
         </div>
@@ -123,7 +145,7 @@ const AboutSection = ({
             Meet Our Team
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
+            {displayTeamMembers.map((member, index) => (
               <TeamMember key={index} {...member} />
             ))}
           </div>
@@ -137,6 +159,12 @@ const AboutSection = ({
           <Button
             variant="outline"
             className="border-amber-600 dark:border-gold text-amber-600 dark:text-gold bg-amber-600/10 dark:bg-gold/10 text-lg px-8 py-3"
+            onClick={() => {
+              const contactSection = document.getElementById("contact");
+              if (contactSection) {
+                contactSection.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
           >
             Reserve Your Table
           </Button>
